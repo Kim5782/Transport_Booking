@@ -1,0 +1,77 @@
+﻿@inject NavigationManager Navigation
+
+<nav class="navbar">
+    <a class="navbar-brand" href="/">Fast Transport</a>
+    <div class="navbar-nav">
+        <a class="nav-link" href="about-us">About Us</a>
+        
+    </div>
+    <div class="navbar-contact">
+        <span class="phone-number">+65 6775 3889</span>
+        <span class="email-address">info@fasttransport.com</span>
+    </div>
+    
+    <div class="navbar-cta">
+        <button class="book-now-btn" @onclick="NavigateToBooking">Book Now</button>
+    </div>
+</nav>
+
+@code {
+   
+
+    private void BeginLogOut(MouseEventArgs args)
+    {
+        // actual logout path
+        Navigation.NavigateTo("authentication/logout", forceLoad: true);
+    }
+
+    private void NavigateToBooking()
+    {
+        Navigation.NavigateTo("booking");
+    }
+}
+
+<div class="user-actions">
+    <button class="icon-button" @onclick="Search">
+        <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+    </button>
+
+    <AuthorizeView>
+        <Authorized>
+            <button class="icon-button" @onclick="GoToProfile">
+                <span class="oi oi-person" aria-hidden="true"></span>
+            </button>
+        </Authorized>
+        <NotAuthorized>
+            <button class="icon-button" @onclick="GoToRegister">
+                <span class="oi oi-plus" aria-hidden="true"></span>
+            </button>
+            <button class="icon-button" @onclick="GoToLogin">
+                <span class="oi oi-account-login" aria-hidden="true"></span>
+            </button>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code {
+    private void Search()
+    {
+        // Logic for search or navigate to search page
+    }
+
+    private void GoToProfile()
+    {
+        Navigation.NavigateTo("profile");
+    }
+
+    private void GoToRegister()
+    {
+        Navigation.NavigateTo("register");
+    }
+
+    private void GoToLogin()
+    {
+        Navigation.NavigateTo("login");
+    }
+}
+

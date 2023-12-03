@@ -1,0 +1,34 @@
+﻿@page "/profile"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Profile</h3>
+
+@code {
+    private AuthenticationState authState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            // Populate user profile details
+        }
+        else
+        {
+            // Redirect to login page or show a message
+        }
+    }
+}
+
+@if (authState.User.Identity.IsAuthenticated)
+{
+    <p>Welcome @authState.User.Identity.Name!</p>
+    <!-- Display user profile information here -->
+}
+else
+{
+    <p>Please <a href="login">log in</a> to view your profile.</p>
+}

@@ -1,0 +1,28 @@
+﻿@page "/login"
+
+<h3>Login</h3>
+
+<EditForm Model="@userLoginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="username" @bind-Value="@userLoginModel.Username" placeholder="Username" />
+    <InputText id="password" @bind-Value="@userLoginModel.Password" placeholder="Password" type="password" />
+    
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private UserLoginModel userLoginModel = new UserLoginModel();
+
+    private async Task HandleLogin()
+    {
+        // Implement login logic here
+    }
+
+    public class UserLoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+}
