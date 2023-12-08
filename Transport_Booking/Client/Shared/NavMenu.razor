@@ -18,13 +18,6 @@
 
 @code {
    
-
-    private void BeginLogOut(MouseEventArgs args)
-    {
-        // actual logout path
-        Navigation.NavigateTo("authentication/logout", forceLoad: true);
-    }
-
     private void NavigateToBooking()
     {
         Navigation.NavigateTo("booking");
@@ -36,22 +29,60 @@
         <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
     </button>
 
-    <AuthorizeView>
-        <Authorized>
-            <button class="icon-button" @onclick="GoToProfile">
-                <span class="oi oi-person" aria-hidden="true"></span>
-            </button>
-        </Authorized>
-        <NotAuthorized>
-            <button class="icon-button" @onclick="GoToRegister">
-                <span class="oi oi-plus" aria-hidden="true"></span>
-            </button>
-            <button class="icon-button" @onclick="GoToLogin">
-                <span class="oi oi-account-login" aria-hidden="true"></span>
-            </button>
-        </NotAuthorized>
-    </AuthorizeView>
+<AuthorizeView>
+<Authorized>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="authentication/profile" Match="NavLinkMatch.All">
+<span class="oi oi-person" aria-hidden="true"></span> Hello, @context.User.Identity?.Name!
+</NavLink>
 </div>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="#" @onclick="BeginLogOut" Match="NavLinkMatch.All">
+<span class="oi oi-account-logout" aria-hidden="true"></span> Log out
+</NavLink>
+</div>
+</Authorized>
+<NotAuthorized>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="authentication/register" Match="NavLinkMatch.All">
+<span class="oi oi-person" aria-hidden="true"></span> Register
+</NavLink>
+</div>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="authentication/login" Match="NavLinkMatch.All">
+<span class="oi oi-account-logout" aria-hidden="true"></span> Log in
+</NavLink>
+</div>
+</NotAuthorized>
+</AuthorizeView>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+<span class="oi oi-home" aria-hidden="true"></span> Home
+</NavLink>
+</div>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="counter">
+<span class="oi oi-plus" aria-hidden="true"></span> Counter
+</NavLink>
+</div>
+<div class="nav-item px-3">
+<NavLink class="nav-link" href="fetchdata">
+<span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+</NavLink>
+</div>
+</div>
+@code {
+private bool collapseNavMenu = true;
+private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+private void ToggleNavMenu()
+{
+collapseNavMenu = !collapseNavMenu;
+}
+private void BeginLogOut(MouseEventArgs args)
+{
+Navigation.NavigateToLogout("authentication/logout", "/");
+}
+}
 
 @code {
     private void Search()
@@ -61,17 +92,17 @@
 
     private void GoToProfile()
     {
-        Navigation.NavigateTo("profile");
+        Navigation.NavigateTo("authentication/profile");
     }
 
     private void GoToRegister()
     {
-        Navigation.NavigateTo("register");
+        Navigation.NavigateTo("authentication/register");
     }
 
     private void GoToLogin()
     {
-        Navigation.NavigateTo("login");
+        Navigation.NavigateTo("authentication/login");
     }
 }
 
