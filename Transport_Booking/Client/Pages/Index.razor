@@ -1,116 +1,107 @@
 ﻿@page "/"
+
+@inject HttpClient Http
 @inject NavigationManager Navigation
-@using Microsoft.AspNetCore.Components.Authorization
 
-<PageTitle>Fast Transport</PageTitle>
+@using System.ComponentModel.DataAnnotations;
 
+<div class="navbar">
+    <a href="authentication/profile">Profile</a>
+    <a href="/">Home</a>
+    <a href="authentication/register">Register</a>
+    <a href="authentication/login">Login</a>
+    <a href="/about-us">About Us</a>
+    <a href="/pg">Price Guide</a>
+    <a href="/services">Services</a>
+    <a href="/contact-us">Contact Us</a>
+</div>
+
+<!-- Header -->
 <header class="header">
-    <nav class="navbar">
-        <div class="navbar-brand">
-            <a href="/">Fast Transport</a>
-        </div>
-        <div>
-            <a class="nav-link" href="authentication/profile">Profile</a>
-        </div>
-        <div>
-            <a class="nav-link" href="/price-guide">Price Guide</a>
-        </div>
-        <div>
-            <a class="nav-link" href="/gallery">Gallery</a>
-        </div>
-        <div>
-            <a class="nav-link" href="/services">Services</a>
-        </div>
-        <div>
-            <a class="nav-link" href="/blog">Blog</a>
-        </div>
-        <div>
-            <a class="nav-link" href="/contact-us">Contact Us</a>
-        </div>
-        <div class="navbar-contact">
-            <span class="phone-number">+65 6775 3889</span>
-            <span class="email-address">info@fasttransport.com</span>
-        </div>
-        <div class="navbar-end">
-            <button class="icon-button search-icon" @onclick="Search">
-                <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
-            </button>
-            <NavLink class="nav-link" href="authentication/register">Register</NavLink>
-            <NavLink class="nav-link" href="authentication/login">Login</NavLink>
-            <button class="book-now">Book Now</button>
-        </div>
-    </nav>
+    <h1>Fast Transport</h1>
+    <p></p>
+    <button type="submit" onclick="location.href='/booking'" class="btn btn-primary">Book Now!</button>
 </header>
 
-<section class="private-car-service">
-    <div class="container">
-        <h2>PRIVATE CAR SERVICE</h2>
-        <p>
-            In the last decade, private car services have revolutionized 
-            urban transportation. Once dominated by traditional taxis and 
-            public transit, the streets are now teeming with vehicles from
-            companies like Uber and Lyft. These services offer a new level 
-            of convenience and flexibility, but they also bring challenges
-            and controversies.
-        </p>
-        <p>
-            Private car services have a relatively short but dynamic history. 
-            Initially, these services were similar to taxi services but with
-            a personal touch. The advent of smartphones marked a turning point, 
-            allowing companies to leverage technology for streamlined operations.
-            Today, industry giants like Uber and Lyft have a global presence, 
-            reshaping how people view personal transportation.
-        </p>
 
-        <p>
-            The primary advantage of private car services is convenience. 
-            With a few taps on a smartphone, users can summon a car to their 
-            exact location and get real-time updates on its arrival. Safety 
-            is another selling point; features like GPS tracking and driver 
-            verification enhance passenger security. Economically, these services
-            have created a flexible job market, allowing individuals to work as 
-            independent contractors.
-        </p>
-        <p>
-            Private car services have undeniably transformed urban travel, 
-            offering unmatched convenience and reshaping economic opportunities. 
-            However, they also pose challenges that need addressing, from regulatory
-            compliance to environmental considerations. As society continues to evolve
-            with technology, the role and impact of these services will be a critical
-            area of discussion and development.
-        </p>
-        
-        <img src="toyota.jpg" alt="Private Car Interior" height="200" width="300" />
+<div class="page-container">
+    <div class="image-container">
+<img src="/banner.png" alt="Transport Booking Banner" class="banner-image" />
     </div>
-</section>
+</div>
 
-<main>
-    
-</main>
+<div class="text-center">
+    <h1>DISCOVER THE ULTIMATE RIDE EXPERIENCE</h1>
+    <p>Welcome to a world of convenience and luxury. Book your private car and explore the city in style.</p>
 
-@code {
-    private void Search()
-    {
-        // Logic for search or navigate to search page
-    }
+    <div class="signup-section">
+        <h2>JOIN THE RIDE REVOLUTION</h2>
+        <p>SIGN UP NOW AND UNLOCK A WORLD OF POSSIBILITIES.</p>
 
-    private void GoToProfile()
-    {
-        Navigation.NavigateTo("profile");
-    }
+        <button type="submit" onclick="location.href='authentication/Register'" class="btn btn-primary">Sign up!</button>
+        
+        <button class="btn btn-secondary" onclick="location.href='authentication/login'">Login</button>
+    </div>
+</div>
+    <div class="content-container">
+        <div class="banner-container">
+            <img src="/marina.jpg" alt="City View" class="banner-image2" />
+            <div class="banner-text">
+                <h1>EXPLORE WITH EASE</h1>
+                <p>Experience the city like never before. Book your ride and start your adventure today.</p>
+                <button class="start-now-button">START NOW</button>
+            </div>
+        </div>
+        <div class="spacer"></div>
+</div>
 
-    private void Logout()
-    {
-        // Logic to log out the user
-    }
+<div class="why-choose-us-container">
+    <div class="why-choose-us-text">
+        <h2>WHY CHOOSE US?</h2>
+        <ul>
+            <li>HASSLE-FREE BOOKING</li>
+            <li>WIDE VARIETY OF LUXURY CARS</li>
+            <li>EXPLORE LOCAL LANDMARKS</li>
+            <li>PERSONAL TESTIMONIALS</li>
+            <li>SUPERIOR CUSTOMER SERVICE</li>
+        </ul>
+    </div>
+    <div class="why-choose-us-image">
+        <img src="/nightview.jpg" alt="City Night View">
+    </div>
+</div>
 
-    private void GoToRegister()
-    {
-        Navigation.NavigateTo("register");
-    }
+<div class="faq-section">
+    <div class="faq-title-area">
+        <h2>FAQ</h2>
+        <p>GOT QUESTIONS? WE'VE GOT ANSWERS!</p>
+        <p>if you have anymore questions please do feel free to inform us using this button!</p>
+        <button type="submit" onclick="location.href='/feedback'" class="btn btn-primary">Feedback Here!</button>
 
-    private void GoToLogin()
-    {
-        Navigation.NavigateTo("login");
-    }
-}
+    </div>
+    <div class="faq-qa-area">
+        <div class="faq-item">
+            <h3>HOW DO I BOOK A CAR?</h3>
+            <p>SIMPLY VISIT OUR WEBSITE, CHOOSE YOUR DESTINATION, SELECT YOUR CAR, AND YOU'RE GOOD TO GO!</p>
+        </div>
+        <div class="faq-item">
+            <h3>ARE THE CARS WELL-MAINTAINED?</h3>
+            <p>ABSOLUTELY! OUR CARS ARE METICULOUSLY MAINTAINED FOR YOUR SAFETY AND COMFORT.</p>
+        </div>
+        <!-- More FAQ items here -->
+    </div>
+</div>
+
+<div class="testimonial-container">
+    <div class="testimonial-image">
+        <img src="/katong.jpg" alt="Cityscape" />
+    </div>
+    <div class="testimonial-content">
+        <blockquote>
+            "THE SERVICE WAS AMAZING, AND THE CARS WERE TOP-NOTCH. HIGHLY RECOMMENDED!"
+        </blockquote>
+        <p>
+            BOOKING WAS SMOOTH, AND THE DRIVER WAS PROFESSIONAL. A GREAT EXPERIENCE OVERALL.
+        </p>
+    </div>
+</div>
