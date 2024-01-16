@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Content Remove="Pages\Login.razor" />
+    <Content Remove="wwwroot\css\about.css" />
   </ItemGroup>
 
   <ItemGroup>
