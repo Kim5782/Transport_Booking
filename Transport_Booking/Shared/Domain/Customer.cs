@@ -8,8 +8,9 @@
         public string? Email { get; set; }
         public int BookingId { get; set; }
         public int FeedbackId { get; set; }
-        public virtual Feedback? Feedback { get; set; }
+        public int PaymentId { get; set; }
+        public virtual Payment? Payment { get; set; }
         public virtual List<TransportBooking>? TransportBookings { get; set; }
-        public virtual List<Feedback>? Feeback { get; set; }
+        public virtual List<Feedback>? Feebacks { get; set; }
     }
 }

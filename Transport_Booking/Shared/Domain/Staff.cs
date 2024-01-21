@@ -16,5 +16,6 @@ namespace Transport_Booking.Shared.Domain
         public string? StaffContact { get; set; }
 
 
+
     }
 }

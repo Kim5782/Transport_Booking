@@ -14,8 +14,6 @@ namespace Transport_Booking.Shared.Domain
         public string? PaymentMethod { get; set; }
         public int BookingId { get; set; }
         public virtual TransportBooking? TransportBooking { get; set; }
-        public int CustomerId { get; set; }
-        public virtual Customer? Customer { get; set; }
 
     }
 }
