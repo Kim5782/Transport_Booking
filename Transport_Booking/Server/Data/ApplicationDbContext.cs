@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Transport_Booking.Server.Configurations.Entities;
 using Transport_Booking.Server.Models;
 using Transport_Booking.Shared.Domain;
 
@@ -21,5 +22,12 @@ namespace Transport_Booking.Server.Data
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Customer> Customer { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new VehicleSeedConfiguration());
+        }
     }
 }
