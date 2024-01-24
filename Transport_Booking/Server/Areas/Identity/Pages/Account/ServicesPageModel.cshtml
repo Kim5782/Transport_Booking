@@ -1,0 +1,29 @@
+﻿@page
+@model YourAppNamespace.Pages.ServicesPageModel
+
+<h3>Services</h3>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="ServiceRequest.Name">Name</label>
+        <input asp-for="ServiceRequest.Name" class="form-control" />
+        <span asp-validation-for="ServiceRequest.Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ServiceRequest.ContactNumber">Contact Number</label>
+        <input asp-for="ServiceRequest.ContactNumber" class="form-control" />
+        <span asp-validation-for="ServiceRequest.ContactNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ServiceRequest.Email">Email</label>
+        <input asp-for="ServiceRequest.Email" class="form-control" />
+        <span asp-validation-for="ServiceRequest.Email" class="text-danger"></span>
+    </div>
+
+    <!-- Add similar divs for other fields with asp-for and asp-validation-for -->
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Submit</button>
+    </div>
+</form>

@@ -1,7 +1,69 @@
 ﻿@page "/pg"
-<button type="submit" onclick="location.href='/'" class="btn btn-primary">Return</button>
-<h3>Price Guide Page</h3>
-<h5> this is where the price guide page will go.</h5>
-@code {
+@using System.Collections.Generic
+@inject NavigationManager NavigationManager
 
+<button type="submit" onclick="location.href='/'" class="btn btn-primary">Return</button>
+<h3>Car Booking Price Guide</h3>
+<h5>Select from a variety of car models:</h5>
+
+@if (carModels != null && carModels.Any())
+{
+    <div class="row">
+        @foreach (var car in carModels)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="@car.ImageUrl" class="card-img-top" alt="@car.ModelName"> <!-- Image displayed here -->
+                    <div class="card-body">
+                        <h5 class="card-title">@car.ModelName</h5>
+                        <p class="card-text">@car.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Price per day: @car.PricePerHour.ToString("C")</small>
+                            <button class="btn btn-primary" @onclick="() => SelectCarModel(car)">Select</button> <!-- Selection Button -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No car models available for booking at the moment.</p>
+}
+
+
+@code {
+    private List<CarModel> carModels;
+
+    protected override void OnInitialized()
+    {
+        carModels = new List<CarModel>
+        {
+            new CarModel { ModelName = "Model A6L", PricePerHour = 60, Description = "Luxury sedan with top performance", ImageUrl ="audi.jpg" },
+            new CarModel { ModelName = "Model X", PricePerHour = 90, Description = "Spacious SUV with advanced features" },
+            new CarModel { ModelName = "Model X", PricePerHour = 90, Description = "Spacious SUV with advanced features" },
+            new CarModel { ModelName = "Model X", PricePerHour = 90, Description = "Spacious SUV with advanced features" },
+            new CarModel { ModelName = "Model X", PricePerHour = 90, Description = "Spacious SUV with advanced features" },
+            new CarModel { ModelName = "Model X", PricePerHour = 90, Description = "Spacious SUV with advanced features" },
+            // Add more car models as needed
+        };
+    }
+
+    private void SelectCarModel(CarModel selectedCar)
+    {
+        // Store the selected car model details
+        // For instance, using a service or session state
+
+        // Redirect to the payment page
+        NavigationManager.NavigateTo("/services");
+    }
+
+    class CarModel
+    {
+        public string ModelName { get; set; }
+        public decimal PricePerHour { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+    }
 }
