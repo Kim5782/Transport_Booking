@@ -14,7 +14,6 @@ namespace Transport_Booking.Server.Configurations.Entities
                 {
                     Id = 1,
                     PlateNumber = "SXT0123B",
-                    VehicleId = 1,
                     Colour = "White",
                     Type = "Limousine",
                     Model = "Chrysler 300 Limo",
@@ -25,7 +24,6 @@ namespace Transport_Booking.Server.Configurations.Entities
                 {
                     Id = 2,
                     PlateNumber = "SSG0810F",
-                    VehicleId = 2,
                     Colour = "Black",
                     Type = "Car",
                     Model = "S500L 4MATIC AMG Line Premium Plus (A)",

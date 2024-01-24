@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Transport_Booking.Server.Data;
 
 #nullable disable
 
-namespace Transport_Booking.Server.Data.Migrations
+namespace Transport_Booking.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240124052828_newdb")]
+    partial class newdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,17 +382,11 @@ namespace Transport_Booking.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ContactNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -400,70 +397,15 @@ namespace Transport_Booking.Server.Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FeedbackId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentId");
 
                     b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("Transport_Booking.Shared.Domain.Driver", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ContactNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StaffId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("Transport_Booking.Shared.Domain.Feedback", b =>
@@ -474,26 +416,17 @@ namespace Transport_Booking.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("FeedbackId")
-                        .HasColumnType("int");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -505,8 +438,6 @@ namespace Transport_Booking.Server.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("TransportBookingsId");
 
@@ -524,9 +455,6 @@ namespace Transport_Booking.Server.Data.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -538,9 +466,6 @@ namespace Transport_Booking.Server.Data.Migrations
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("int");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
@@ -578,9 +503,6 @@ namespace Transport_Booking.Server.Data.Migrations
                     b.Property<string>("StaffContact")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StaffID")
-                        .HasColumnType("int");
-
                     b.Property<string>("StaffName")
                         .HasColumnType("nvarchar(max)");
 
@@ -593,6 +515,35 @@ namespace Transport_Booking.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Staffs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffContact = "90223457",
+                            StaffName = "Peter Tan",
+                            StaffPosition = "Driver"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffContact = "89259981",
+                            StaffName = "Jansen Teo",
+                            StaffPosition = "Booking Manager"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StaffContact = "94339800",
+                            StaffName = "Timothy Yap",
+                            StaffPosition = "Driver"
+                        });
                 });
 
             modelBuilder.Entity("Transport_Booking.Shared.Domain.TransportBooking", b =>
@@ -603,13 +554,10 @@ namespace Transport_Booking.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -627,14 +575,14 @@ namespace Transport_Booking.Server.Data.Migrations
                     b.Property<DateTime>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DropOffLocation")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PickupLocation")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StaffId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
@@ -649,7 +597,7 @@ namespace Transport_Booking.Server.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("DriverId");
+                    b.HasIndex("StaffId");
 
                     b.HasIndex("VehicleId");
 
@@ -694,9 +642,6 @@ namespace Transport_Booking.Server.Data.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Vehicles");
@@ -712,8 +657,7 @@ namespace Transport_Booking.Server.Data.Migrations
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Model = "Chrysler 300 Limo",
                             PlateNumber = "SXT0123B",
-                            Type = "Limousine",
-                            VehicleId = 1
+                            Type = "Limousine"
                         },
                         new
                         {
@@ -725,8 +669,7 @@ namespace Transport_Booking.Server.Data.Migrations
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Model = "S500L 4MATIC AMG Line Premium Plus (A)",
                             PlateNumber = "SSG0810F",
-                            Type = "Car",
-                            VehicleId = 2
+                            Type = "Car"
                         });
                 });
 
@@ -781,49 +724,11 @@ namespace Transport_Booking.Server.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Transport_Booking.Shared.Domain.Customer", b =>
-                {
-                    b.HasOne("Transport_Booking.Shared.Domain.Payment", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-                });
-
-            modelBuilder.Entity("Transport_Booking.Shared.Domain.Driver", b =>
-                {
-                    b.HasOne("Transport_Booking.Shared.Domain.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Transport_Booking.Shared.Domain.Vehicle", "Vehicle")
-                        .WithMany()
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Staff");
-
-                    b.Navigation("Vehicle");
-                });
-
             modelBuilder.Entity("Transport_Booking.Shared.Domain.Feedback", b =>
                 {
-                    b.HasOne("Transport_Booking.Shared.Domain.Customer", "Customer")
-                        .WithMany("Feebacks")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Transport_Booking.Shared.Domain.TransportBooking", "TransportBookings")
                         .WithMany()
                         .HasForeignKey("TransportBookingsId");
-
-                    b.Navigation("Customer");
 
                     b.Navigation("TransportBookings");
                 });
@@ -841,33 +746,24 @@ namespace Transport_Booking.Server.Data.Migrations
                 {
                     b.HasOne("Transport_Booking.Shared.Domain.Customer", "Customer")
                         .WithMany("TransportBookings")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
-                    b.HasOne("Transport_Booking.Shared.Domain.Driver", "Driver")
-                        .WithMany("TransportBookings")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Transport_Booking.Shared.Domain.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId");
 
-                    b.HasOne("Transport_Booking.Shared.Domain.Vehicle", null)
+                    b.HasOne("Transport_Booking.Shared.Domain.Vehicle", "Vehicle")
                         .WithMany("TransportBookings")
                         .HasForeignKey("VehicleId");
 
                     b.Navigation("Customer");
 
-                    b.Navigation("Driver");
+                    b.Navigation("Staff");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("Transport_Booking.Shared.Domain.Customer", b =>
-                {
-                    b.Navigation("Feebacks");
-
-                    b.Navigation("TransportBookings");
-                });
-
-            modelBuilder.Entity("Transport_Booking.Shared.Domain.Driver", b =>
                 {
                     b.Navigation("TransportBookings");
                 });

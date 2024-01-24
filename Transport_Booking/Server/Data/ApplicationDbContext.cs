@@ -16,11 +16,10 @@ namespace Transport_Booking.Server.Data
         {
         }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<TransportBooking> TransportBookings{ get; set; }
-        public DbSet<Staff> Staffs { get; set;}
+        public DbSet<TransportBooking> TransportBookings { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
         public DbSet<Customer> Customer { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -28,6 +27,7 @@ namespace Transport_Booking.Server.Data
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new VehicleSeedConfiguration());
+            builder.ApplyConfiguration(new StaffSeedConfiguration());
         }
     }
 }
