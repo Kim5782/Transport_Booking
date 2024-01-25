@@ -4,7 +4,7 @@ using Transport_Booking.Shared;
 
 namespace Transport_Booking.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
