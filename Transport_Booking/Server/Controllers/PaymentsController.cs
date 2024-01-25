@@ -14,50 +14,50 @@ namespace Transport_Booking.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : ControllerBase
+    public class PaymentsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public VehiclesController(IUnitOfWork unitOfWork)
+        public PaymentsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Vehicles
+        // GET: api/Payments
         [HttpGet]
-        public async Task<IActionResult> GetVehicles()
+        public async Task<IActionResult> GetPayments()
         {
-            //return await _context.Vehicles.ToListAsync();
-            var vehicles = await _unitOfWork.Vehicles.GetAll();
-            return Ok(vehicles);
+            //return await _context.Payments.ToListAsync();
+            var Payments = await _unitOfWork.Payments.GetAll();
+            return Ok(Payments);
         }
 
-        // GET: api/Vehicles/5
+        // GET: api/Payments/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVehicle(int id)
+        public async Task<IActionResult> GetPayment(int id)
         {
-            var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id);
+            var Payment = await _unitOfWork.Payments.Get(q => q.Id == id);
 
-            if (vehicle == null)
+            if (Payment == null)
             {
                 return NotFound();
             }
 
-            return Ok(vehicle);
+            return Ok(Payment);
         }
 
-        // PUT: api/Vehicles/5
+        // PUT: api/Payments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
+        public async Task<IActionResult> PutPayment(int id, Payment Payment)
         {
-            if (id != vehicle.Id)
+            if (id != Payment.Id)
             {
                 return BadRequest();
             }
 
-            // _context.Entry(vehicle).State = EntityState.Modified;
-            _unitOfWork.Vehicles.Update(vehicle);
+            // _context.Entry(Payment).State = EntityState.Modified;
+            _unitOfWork.Payments.Update(Payment);
 
             try
             {
@@ -66,7 +66,7 @@ namespace Transport_Booking.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await VehicleExists(id))
+                if (!await PaymentExists(id))
                 {
                     return NotFound();
                 }
@@ -79,36 +79,36 @@ namespace Transport_Booking.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Vehicles
+        // POST: api/Payments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
+        public async Task<ActionResult<Payment>> PostPayment(Payment Payment)
         {
-            await _unitOfWork.Vehicles.Insert(vehicle);
+            await _unitOfWork.Payments.Insert(Payment);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
+            return CreatedAtAction("GetPayment", new { id = Payment.Id }, Payment);
         }
 
-        // DELETE: api/Vehicles/5
+        // DELETE: api/Payments/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicle(int id)
+        public async Task<IActionResult> DeletePayment(int id)
         {
-            var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id);
-            if (vehicle == null)
+            var Payment = await _unitOfWork.Payments.Get(q => q.Id == id);
+            if (Payment == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Vehicles.Delete(id);
+            await _unitOfWork.Payments.Delete(id);
             await _unitOfWork.Save(HttpContext);
             return NoContent();
         }
 
-        private async Task<bool> VehicleExists(int id)
+        private async Task<bool> PaymentExists(int id)
         {
-            var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id);
-            return vehicle != null;
+            var Payment = await _unitOfWork.Payments.Get(q => q.Id == id);
+            return Payment != null;
         }
     }
 }

@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Transport_Booking.Server.Data;
 using Transport_Booking.Server.Models;
 using Microsoft.AspNetCore.Identity;
+using Transport_Booking.Server.IRepository;
+using Transport_Booking.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

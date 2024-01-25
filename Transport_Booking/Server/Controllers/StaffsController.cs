@@ -14,50 +14,50 @@ namespace Transport_Booking.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : ControllerBase
+    public class StaffsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public VehiclesController(IUnitOfWork unitOfWork)
+        public StaffsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Vehicles
+        // GET: api/Staffs
         [HttpGet]
-        public async Task<IActionResult> GetVehicles()
+        public async Task<IActionResult> GetStaffs()
         {
-            //return await _context.Vehicles.ToListAsync();
-            var vehicles = await _unitOfWork.Vehicles.GetAll();
-            return Ok(vehicles);
+            //return await _context.Staffs.ToListAsync();
+            var Staffs = await _unitOfWork.Staffs.GetAll();
+            return Ok(Staffs);
         }
 
-        // GET: api/Vehicles/5
+        // GET: api/Staffs/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVehicle(int id)
+        public async Task<IActionResult> GetStaff(int id)
         {
-            var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id);
+            var Staff = await _unitOfWork.Staffs.Get(q => q.Id == id);
 
-            if (vehicle == null)
+            if (Staff == null)
             {
                 return NotFound();
             }
 
-            return Ok(vehicle);
+            return Ok(Staff);
         }
 
-        // PUT: api/Vehicles/5
+        // PUT: api/Staffs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
+        public async Task<IActionResult> PutStaff(int id, Staff Staff)
         {
-            if (id != vehicle.Id)
+            if (id != Staff.Id)
             {
                 return BadRequest();
             }
 
-            // _context.Entry(vehicle).State = EntityState.Modified;
-            _unitOfWork.Vehicles.Update(vehicle);
+            // _context.Entry(Staff).State = EntityState.Modified;
+            _unitOfWork.Staffs.Update(Staff);
 
             try
             {
@@ -66,7 +66,7 @@ namespace Transport_Booking.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await VehicleExists(id))
+                if (!await StaffExists(id))
                 {
                     return NotFound();
                 }
@@ -79,36 +79,36 @@ namespace Transport_Booking.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Vehicles
+        // POST: api/Staffs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
+        public async Task<ActionResult<Staff>> PostStaff(Staff Staff)
         {
-            await _unitOfWork.Vehicles.Insert(vehicle);
+            await _unitOfWork.Staffs.Insert(Staff);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
+            return CreatedAtAction("GetStaff", new { id = Staff.Id }, Staff);
         }
 
-        // DELETE: api/Vehicles/5
+        // DELETE: api/Staffs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicle(int id)
+        public async Task<IActionResult> DeleteStaff(int id)
         {
-            var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id);
-            if (vehicle == null)
+            var Staff = await _unitOfWork.Staffs.Get(q => q.Id == id);
+            if (Staff == null)
             {
                 return NotFound();
             }
 
-            await _unitOfWork.Vehicles.Delete(id);
+            await _unitOfWork.Staffs.Delete(id);
             await _unitOfWork.Save(HttpContext);
             return NoContent();
         }
 
-        private async Task<bool> VehicleExists(int id)
+        private async Task<bool> StaffExists(int id)
         {
-            var vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id);
-            return vehicle != null;
+            var Staff = await _unitOfWork.Staffs.Get(q => q.Id == id);
+            return Staff != null;
         }
     }
 }
