@@ -31,4 +31,9 @@
     <None Include="Pages\Login.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Feedback\" />
+    <Folder Include="Pages\Payment\" />
+  </ItemGroup>
+
 </Project>

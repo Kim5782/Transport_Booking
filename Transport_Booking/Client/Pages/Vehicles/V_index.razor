@@ -1,0 +1,93 @@
+﻿@page "/vehicles/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations;
+
+
+<div class="navbar">
+    <a href="authentication/profile">Profile</a>
+    <a href="/">Home</a>
+    <a href="authentication/register">Register</a>
+    <a href="authentication/login">Login</a>
+    <a href="/about-us">About Us</a>
+    <a href="/pg">Price Guide</a>
+    <a href="/services">Services</a>
+    <a href="/feedback">Contact Us</a>
+    <a href="/vehicles">Vehicles</a>]
+    <a href="/customers">Customers</a>
+    <a href="/staffs">Staffs</a>
+    <a href="/transportbookings">Bookings</a>
+</div>
+
+
+<h3 class="card-title">Add Vehicle</h3>
+@if (Vehicles == null)
+{
+    <div class="alert alert-info">Loading Vehicles...</div>
+}
+else
+{
+    <table class="table-responsive">
+        <thead>
+            <tr>
+                <th>Model </th>
+                <th>Colour </th>
+                <th>Type </th>
+                <th>Capacity </th>
+                <th>Plate Number </th>
+                <th>Brand </th>
+                <th>Actions </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicle in Vehicles)
+            {
+                <tr>
+                    <td>@vehicle.Model</td>
+                    <td>@vehicle.Colour</td>
+                    <td>@vehicle.Type</td>
+                    <td>@vehicle.Capacity</td>
+                    <td>@vehicle.PlateNumber</td>
+                    <td>@vehicle.Brand</td>
+
+                    <td>
+                        <a href="/vehicle/view/@vehicle.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/vehicle/edit/@vehicle.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(vehicle.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Vehicle>? Vehicles;
+    protected async override Task OnInitializedAsync()
+    {
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+    }
+    async Task Delete(int vehicleId)
+    {
+        if (Vehicles != null)
+        {
+            var vehicle = Vehicles.First(q => q.Id == vehicleId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {vehicle.Model}?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.VehiclesEndpoint}/{vehicleId}");
+                await OnInitializedAsync();
+            }
+
+        }
+    }
+}

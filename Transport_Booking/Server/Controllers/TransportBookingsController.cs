@@ -28,7 +28,7 @@ namespace Transport_Booking.Server.Controllers
         public async Task<IActionResult> GetTransportBookings()
         {
             //return await _context.TransportBookings.ToListAsync();
-            var TransportBookings = await _unitOfWork.TransportBookings.GetAll();
+            var TransportBookings = await _unitOfWork.TransportBookings.GetAll(includes: q => q.Include(x => x.Customer).Include(x => x.Staff).Include(x => x.Vehicle));
             return Ok(TransportBookings);
         }
 

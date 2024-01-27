@@ -1,0 +1,92 @@
+﻿@page "/customers/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.JSInterop;
+@using System.Net.Http.Json;
+@using Transport_Booking.Client.Static;
+@using Transport_Booking.Shared.Domain;
+
+
+<div class="navbar">
+    <a href="authentication/profile">Profile</a>
+    <a href="/">Home</a>
+    <a href="authentication/register">Register</a>
+    <a href="authentication/login">Login</a>
+    <a href="/about-us">About Us</a>
+    <a href="/pg">Price Guide</a>
+    <a href="/services">Services</a>
+    <a href="/feedback">Contact Us</a>
+    <a href="/vehicles">Vehicles</a>]
+    <a href="/customers">Customers</a>
+    <a href="/staffs">Staffs</a>
+    <a href="/transportbookings">Bookings</a>
+</div>
+
+
+<h3 class="card-title">Add customer</h3>
+@if (Customers == null)
+{
+    <div class="alert alert-info">Loading customers...</div>
+}
+else
+{
+    <table class="table-responsive">
+        <thead>
+            <tr>
+                <th>Id </th>
+                <th>Name </th>
+                <th>Contact Number </th>
+                <th>Email </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Customers)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.Name</td>
+                    <td>@customer.ContactNo</td>
+                    <td>@customer.Email</td>
+                    <td>
+                        <a href="/customer/view/@customer.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/customer/edit/@customer.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(customer.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Customer>? Customers;
+    protected async override Task OnInitializedAsync()
+    {
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+    async Task Delete(int customerId)
+    {
+        if (Customers != null)
+        {
+            var customer = Customers.First(q => q.Id == customerId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.Name}?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.CustomersEndpoint}/{customerId}");
+                await OnInitializedAsync();
+            }
+
+        }
+    }
+}

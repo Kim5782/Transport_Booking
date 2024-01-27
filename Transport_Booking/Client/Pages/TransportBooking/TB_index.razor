@@ -1,0 +1,100 @@
+﻿@page "/transportbookings/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.JSInterop;
+@using System.Net.Http.Json;
+@using Transport_Booking.Client.Static;
+@using Transport_Booking.Shared.Domain;
+
+
+<div class="navbar">
+    <a href="authentication/profile">Profile</a>
+    <a href="/">Home</a>
+    <a href="authentication/register">Register</a>
+    <a href="authentication/login">Login</a>
+    <a href="/about-us">About Us</a>
+    <a href="/pg">Price Guide</a>
+    <a href="/services">Services</a>
+    <a href="/feedback">Contact Us</a>
+    <a href="/vehicles">Vehicles</a>]
+    <a href="/customers">Customers</a>
+    <a href="/staffs">Staffs</a>
+    <a href="/transportbookings">Bookings</a>
+</div>
+
+
+<h3 class="card-title">Add TransportBooking</h3>
+@if (transportbookings == null)
+{
+    <div class="alert alert-info">Loading transportbookings...</div>
+}
+else
+{
+    <table class="table-responsive">
+        <thead>
+            <tr>
+                <th>TransportBooking Id </th>
+                <th>Driver </th>
+                <th>Customer </th>
+                <th>Vehicle </th>
+                <th>Date </th>
+                <th>Time </th>
+                <th>Pickup Location </th>
+                <th>Drop-off location </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var TransportBooking in transportbookings)
+            {
+                <tr>
+                    <td>@TransportBooking.Id</td>
+                    <td>@TransportBooking.Staff.StaffName</td>
+                    <td>@TransportBooking.Customer.Name</td>
+                    <td>@TransportBooking.Vehicle.Model</td>
+                    <td>@TransportBooking.Date</td>
+                    <td>@TransportBooking.Time</td>
+                    <td>@TransportBooking.PickupLocation</td>
+                    <td>@TransportBooking.DropOffLocation</td>
+                    <td>
+                        <a href="/TransportBooking/view/@TransportBooking.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/TransportBooking/edit/@TransportBooking.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(TransportBooking.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<TransportBooking>? transportbookings;
+    protected async override Task OnInitializedAsync()
+    {
+        transportbookings = await _client.GetFromJsonAsync<List<TransportBooking>>($"{Endpoints.TransportBookingsEndpoint}");
+    }
+    async Task Delete(int TransportBookingId)
+    {
+        if (transportbookings != null)
+        {
+            var TransportBooking = transportbookings.First(q => q.Id == TransportBookingId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {TransportBooking.Date}?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.TransportBookingsEndpoint}/{TransportBookingId}");
+                await OnInitializedAsync();
+            }
+
+        }
+    }
+}

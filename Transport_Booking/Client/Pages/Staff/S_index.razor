@@ -1,0 +1,92 @@
+﻿@page "/staffs/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.JSInterop;
+@using System.Net.Http.Json;
+@using Transport_Booking.Client.Static;
+@using Transport_Booking.Shared.Domain;
+
+
+<div class="navbar">
+    <a href="authentication/profile">Profile</a>
+    <a href="/">Home</a>
+    <a href="authentication/register">Register</a>
+    <a href="authentication/login">Login</a>
+    <a href="/about-us">About Us</a>
+    <a href="/pg">Price Guide</a>
+    <a href="/services">Services</a>
+    <a href="/feedback">Contact Us</a>
+    <a href="/vehicles">Vehicles</a>]
+    <a href="/customers">Customers</a>
+    <a href="/staffs">Staffs</a>
+    <a href="/transportbookings">Bookings</a>
+</div>
+
+
+<h3 class="card-title">Add staff</h3>
+@if (Staffs == null)
+{
+    <div class="alert alert-info">Loading Staffs...</div>
+}
+else
+{
+    <table class="table-responsive">
+        <thead>
+            <tr>
+                <th>Staff Id </th>
+                <th>Name </th>
+                <th>Position </th>
+                <th>Contact </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in Staffs)
+            {
+                <tr>
+                    <td>@staff.Id</td>
+                    <td>@staff.StaffName</td>
+                    <td>@staff.StaffPosition</td>
+                    <td>@staff.StaffContact</td>
+                    <td>
+                        <a href="/staff/view/@staff.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/staff/edit/@staff.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(staff.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Staff>? Staffs;
+    protected async override Task OnInitializedAsync()
+    {
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+    }
+    async Task Delete(int staffId)
+    {
+        if (Staffs != null)
+        {
+            var staff = Staffs.First(q => q.Id == staffId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {staff.StaffName}?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.StaffsEndpoint}/{staffId}");
+                await OnInitializedAsync();
+            }
+
+        }
+    }
+}
