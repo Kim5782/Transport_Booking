@@ -40,11 +40,10 @@ namespace Transport_Booking.Server.Repository
             => _staffs ??= new GenericRepository<Staff>(_context);
         public IGenericRepository<Vehicle> Vehicles
             => _vehicles ??= new GenericRepository<Vehicle>(_context);
-        public IGenericRepository<TransportBooking> Bookings
+        public IGenericRepository<TransportBooking> TransportBookings
             => _transportbookings ??= new GenericRepository<TransportBooking>(_context);
         public IGenericRepository<Customer> Customers
             => _customers ??= new GenericRepository<Customer>(_context);
-        public IGenericRepository<TransportBooking> TransportBookings => throw new NotImplementedException();
 
         public void Dispose()
         {
