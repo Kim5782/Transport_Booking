@@ -1,0 +1,109 @@
+﻿@page "/transportbookings/create"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>CreateTB</h3>
+<br />
+
+<EditForm Model="@transportBooking" OnValidSubmit="CreateTransportBooking">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Staff:</label>
+        <div>
+            <InputSelect @bind-Value="transportBooking.Staff" class="form-control">
+            <option value="">--Select Staff--</option>
+            @if (Staffs != null)
+            {
+                foreach(var staff in Staffs)
+                {
+                    <option value="@staff.Id">@staff.StaffName</option>
+                }
+            }
+            </InputSelect>
+            <ValidationMessage For="@(() => transportBooking.Staff)"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Customer:</label>
+        <div>
+            <InputSelect @bind-Value="transportBooking.Customer" class="form-control">
+                <option value="">--Select Customer--</option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {
+                        <option value="@customer.Id">@customer.Name</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => transportBooking.Customer)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Vehicle:</label>
+        <div>
+            <InputSelect @bind-Value="transportBooking.Vehicle" class="form-control">
+                <option value="">--Select Vehicle--</option>
+                @if (Vehicles != null)
+                {
+                    foreach (var vehicle in Vehicles)
+                    {
+                        <option value="@vehicle.Id">@vehicle.Model</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => transportBooking.Vehicle)" />
+        </div>
+    </div>
+
+      <div class="form-group">
+        <label>Date:</label>
+        <div>
+            <InputSelect @bind-Value="transportBooking.Date" class="form-control" />
+            @if (transportBooking.Id > 0)
+            {
+                <div class="form-group">
+                    <label>Date In: </label>
+                    <div>
+                        <InputDate @bind-Value="@transportBooking.Date" class="form-control" />
+                        <ValidationMessage For="@(() => transportBooking.Date)" />
+                    </div>
+                </div>
+            }
+            <ValidationMessage For="@(() => transportBooking.Date)" />
+        </div>
+      </div>
+
+    <div class="form-group">
+        <label>Time:</label>
+        <div>
+            <InputSelect @bind-Value="transportBooking.Time" class="form-control" />
+            <ValidationMessage For="@(() => transportBooking.Time)" />
+        </div>
+    </div>
+
+</EditForm>
+
+
+@code {
+    TransportBooking transportBooking = new TransportBooking();
+    private IList<Staff>? Staffs;
+    private IList<Customer>? Customers;
+    private IList<Vehicle>? Vehicles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+
+    private async Task CreateTransportBooking()
+    {
+        await _client.PostAsJsonAsync(Endpoints.TransportBookingsEndpoint, transportBooking);
+        _navManager.NavigateTo("/transportbookings");
+    }
+}

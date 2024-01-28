@@ -2,8 +2,6 @@
 {
     public class TransportBooking : BaseDomainModel
     {
-        public DateTime DateOut { get; set; }
-        public DateTime DateIn { get; set; }
         public virtual Customer? Customer { get; set; }
         public virtual Vehicle? Vehicle { get; set; }
         public virtual Staff? Staff { get; set; }

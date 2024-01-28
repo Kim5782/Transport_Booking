@@ -1,0 +1,83 @@
+﻿@page "/vehicles/create"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>VehiclesCreate</h3>
+
+<EditForm Model="@vehicle" OnValidSubmit="CreateVehicle">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Plate Number: </label>
+        <div>
+            <InputText @bind-Value="@vehicle.PlateNumber" class="form-control" />
+            <ValidationMessage For="@(() => vehicle.PlateNumber )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Colour: </label>
+        <div>
+            <InputText @bind-Value="@vehicle.Colour" class="form-control" />
+            <ValidationMessage For="@(() => vehicle.Colour )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Type: </label>
+        <div>
+            <InputText @bind-Value="@vehicle.Type" class="form-control" />
+            <ValidationMessage For="@(() => vehicle.Type )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Model: </label>
+        <div>
+            <InputText @bind-Value="@vehicle.Model" class="form-control" />
+            <ValidationMessage For="@(() => vehicle.Model )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Capacity: </label>
+        <div>
+            <InputNumber @bind-Value="@vehicle.Capacity" class="form-control" />
+            <ValidationMessage For="@(() => vehicle.Capacity )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Brand: </label>
+        <div>
+            <InputText @bind-Value="@vehicle.Brand" class="form-control" />
+            <ValidationMessage For="@(() => vehicle.Brand )" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Vehicle
+    </button>
+
+</EditForm>
+
+
+@code {
+    Vehicle vehicle = new Vehicle();
+    private IList<Staff>? Staffs;
+    private IList<Customer>? Customers;
+    private IList<Vehicle>? Vehicles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+
+    private async Task CreateVehicle()
+    {
+        await _client.PostAsJsonAsync(Endpoints.VehiclesEndpoint, vehicle);
+        _navManager.NavigateTo("/vehicles");
+    }
+}

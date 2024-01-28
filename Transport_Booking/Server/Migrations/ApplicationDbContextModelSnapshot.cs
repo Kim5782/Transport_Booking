@@ -403,6 +403,26 @@ namespace Transport_Booking.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customer");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ContactNo = "88744323",
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "panrem@gmail.com",
+                            Name = "Pan Rem"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContactNo = "9653421",
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "kimchi@gmail.com",
+                            Name = "Kim Lee"
+                        });
                 });
 
             modelBuilder.Entity("Transport_Booking.Shared.Domain.Feedback", b =>
@@ -561,12 +581,6 @@ namespace Transport_Booking.Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateIn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOut")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateUpdated")

@@ -283,8 +283,6 @@ namespace Transport_Booking.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DateOut = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: true),
                     VehicleId = table.Column<int>(type: "int", nullable: true),
                     StaffId = table.Column<int>(type: "int", nullable: true),
@@ -364,6 +362,15 @@ namespace Transport_Booking.Server.Migrations
                         column: x => x.TransportBookingsId,
                         principalTable: "TransportBookings",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Customer",
+                columns: new[] { "Id", "ContactNo", "CreatedBy", "DateCreated", "DateUpdated", "Email", "Name", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, "88744323", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "panrem@gmail.com", "Pan Rem", null },
+                    { 2, "9653421", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kimchi@gmail.com", "Kim Lee", null }
                 });
 
             migrationBuilder.InsertData(

@@ -29,6 +29,7 @@ namespace Transport_Booking.Server.Data
 
             builder.ApplyConfiguration(new VehicleSeedConfiguration());
             builder.ApplyConfiguration(new StaffSeedConfiguration());
+            builder.ApplyConfiguration(new CustomerSeedConfiguration());
         }
     }
 }
