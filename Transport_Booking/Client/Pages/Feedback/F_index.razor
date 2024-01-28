@@ -1,4 +1,4 @@
-﻿@page "/customers/"
+﻿@page "/feedbacks/"
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
@@ -27,39 +27,39 @@
 </div>
 
 
-<h3 class="card-title">Add customer</h3>
-@if (Customers == null)
+<h3 class="card-title">Add Feedback</h3>
+@if (Feedbacks== null)
 {
-    <div class="alert alert-info">Loading customers...</div>
+    <div class="alert alert-info">Loading Feedbacks...</div>
 }
 else
 {
     <table class="table-responsive">
         <thead>
             <tr>
-                <th>Id </th>
-                <th>Name </th>
-                <th>Contact Number </th>
-                <th>Email </th>
+                <th>Feedback Id </th>
+                <th>Comments</th>
+                <th>Rating </th>
+                <th>Transport Booking Id </th>
                 <th>Actions </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in Customers)
+            @foreach (var Feedback in Feedbacks)
             {
                 <tr>
-                    <td>@customer.Id</td>
-                    <td>@customer.Name</td>
-                    <td>@customer.ContactNo</td>
-                    <td>@customer.Email</td>
+                    <td>@Feedback.Id</td>
+                    <td>@Feedback.Comments</td>
+                    <td>@Feedback.Rating</td>
+                    <td>@Feedback.TransportBookings.Id</td>
                     <td>
-                        <a href="/customer/view/@customer.Id" class="btn btn-primary">
+                        <a href="/Feedback/view/@Feedback.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/customer/edit/@customer.Id" class="btn btn-warning">
+                        <a href="/Feedback/edit/@Feedback.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(customer.Id))">
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(Feedback.Id))">
                             <span class="oi oi-delete"></span>
                         </button>
                     </td>
@@ -72,20 +72,20 @@ else
 }
 
 @code {
-    private List<Customer>? Customers;
+    private List<Feedback>? Feedbacks;
     protected async override Task OnInitializedAsync()
     {
-        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+        Feedbacks= await _client.GetFromJsonAsync<List<Feedback>>($"{Endpoints.FeedbacksEndpoint}");
     }
-    async Task Delete(int customerId)
+    async Task Delete(int FeedbackId)
     {
-        if (Customers != null)
+        if (Feedbacks!= null)
         {
-            var customer = Customers.First(q => q.Id == customerId);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.Name}?");
+            var Feedback = Feedbacks.First(q => q.Id == FeedbackId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {Feedback.Id}?");
             if (confirm)
             {
-                await _client.DeleteAsync($"{Endpoints.CustomersEndpoint}/{customerId}");
+                await _client.DeleteAsync($"{Endpoints.FeedbacksEndpoint}/{FeedbackId}");
                 await OnInitializedAsync();
             }
 

@@ -28,7 +28,7 @@ namespace Transport_Booking.Server.Controllers
         public async Task<IActionResult> GetPayments()
         {
             //return await _context.Payments.ToListAsync();
-            var Payments = await _unitOfWork.Payments.GetAll();
+            var Payments = await _unitOfWork.Payments.GetAll(includes: q => q.Include(x => x.TransportBookings));
             return Ok(Payments);
         }
 

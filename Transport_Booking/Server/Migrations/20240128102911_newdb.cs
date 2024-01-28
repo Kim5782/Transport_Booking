@@ -347,10 +347,10 @@ namespace Transport_Booking.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: true),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TransportBookingId = table.Column<int>(type: "int", nullable: true),
+                    TransportBookingsId = table.Column<int>(type: "int", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -360,8 +360,8 @@ namespace Transport_Booking.Server.Migrations
                 {
                     table.PrimaryKey("PK_Payment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payment_TransportBookings_TransportBookingId",
-                        column: x => x.TransportBookingId,
+                        name: "FK_Payment_TransportBookings_TransportBookingsId",
+                        column: x => x.TransportBookingsId,
                         principalTable: "TransportBookings",
                         principalColumn: "Id");
                 });
@@ -446,9 +446,9 @@ namespace Transport_Booking.Server.Migrations
                 column: "Use");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_TransportBookingId",
+                name: "IX_Payment_TransportBookingsId",
                 table: "Payment",
-                column: "TransportBookingId");
+                column: "TransportBookingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_ConsumedTime",

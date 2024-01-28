@@ -28,7 +28,7 @@ namespace Transport_Booking.Server.Controllers
         public async Task<IActionResult> GetFeedbacks()
         {
             //return await _context.Feedbacks.ToListAsync();
-            var Feedbacks = await _unitOfWork.Feedbacks.GetAll();
+            var Feedbacks = await _unitOfWork.Feedbacks.GetAll(includes: q => q.Include(x => x.TransportBookings));
             return Ok(Feedbacks);
         }
 

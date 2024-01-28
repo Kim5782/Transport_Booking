@@ -2,10 +2,10 @@
 {
     public class Payment : BaseDomainModel
     {
-        public double Amount { get; set; }
+        public double? Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public string? PaymentMethod { get; set; }
-        public virtual TransportBooking? TransportBooking { get; set; }
+        public virtual TransportBooking? TransportBookings { get; set; }
 
     }
 }

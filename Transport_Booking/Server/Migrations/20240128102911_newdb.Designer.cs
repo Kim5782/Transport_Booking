@@ -12,7 +12,7 @@ using Transport_Booking.Server.Data;
 namespace Transport_Booking.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240124052828_newdb")]
+    [Migration("20240128102911_newdb")]
     partial class newdb
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Transport_Booking.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -452,7 +452,7 @@ namespace Transport_Booking.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Amount")
+                    b.Property<double?>("Amount")
                         .HasColumnType("float");
 
                     b.Property<string>("CreatedBy")
@@ -470,7 +470,7 @@ namespace Transport_Booking.Server.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TransportBookingId")
+                    b.Property<int?>("TransportBookingsId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -478,7 +478,7 @@ namespace Transport_Booking.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TransportBookingId");
+                    b.HasIndex("TransportBookingsId");
 
                     b.ToTable("Payment");
                 });
@@ -735,11 +735,11 @@ namespace Transport_Booking.Server.Migrations
 
             modelBuilder.Entity("Transport_Booking.Shared.Domain.Payment", b =>
                 {
-                    b.HasOne("Transport_Booking.Shared.Domain.TransportBooking", "TransportBooking")
+                    b.HasOne("Transport_Booking.Shared.Domain.TransportBooking", "TransportBookings")
                         .WithMany()
-                        .HasForeignKey("TransportBookingId");
+                        .HasForeignKey("TransportBookingsId");
 
-                    b.Navigation("TransportBooking");
+                    b.Navigation("TransportBookings");
                 });
 
             modelBuilder.Entity("Transport_Booking.Shared.Domain.TransportBooking", b =>
