@@ -1,0 +1,40 @@
+﻿<h3>FormComponent</h3>
+
+<EditForm Model="@customer" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Name: </label>
+        <div>
+            <InputText @bind-Value="@customer.Name" class="form-control" />
+            <ValidationMessage For="@(() => customer.Name )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Contact: </label>
+        <div>
+            <InputText @bind-Value="@customer.ContactNo" class="form-control" />
+            <ValidationMessage For="@(() => customer.ContactNo )" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Email Address: </label>
+        <div>
+            <InputText @bind-Value="@customer.Email" class="form-control" />
+            <ValidationMessage For="@(() => customer.Email )" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+
+</EditForm>
+
+@code {
+    [Parameter] public Customer? customer { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

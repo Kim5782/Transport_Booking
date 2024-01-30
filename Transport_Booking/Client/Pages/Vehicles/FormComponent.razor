@@ -1,26 +1,8 @@
-﻿@page "/vehicles/create"
-@inject HttpClient _client
-@inject NavigationManager _navManager
+﻿
+<h3>Form Component</h3>
 
-<div class="navbar">
-    <a href="authentication/profile">Profile</a>
-    <a href="/">Home</a>
-    <a href="authentication/register">Register</a>
-    <a href="authentication/login">Login</a>
-    <a href="/about-us">About Us</a>
-    <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
-    <a href="/feedbacks">Contact Us</a>
-    <a href="/vehicles">Vehicles</a>]
-    <a href="/customers">Customers</a>
-    <a href="/staffs">Staffs</a>
-    <a href="/transportbookings">Bookings</a>
-    <a href="/payments">Payment</a>
-</div>
 
-<h3>VehiclesCreate</h3>
-
-<EditForm Model="@vehicle" OnValidSubmit="CreateVehicle">
+<EditForm Model="@vehicle" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group">
@@ -72,28 +54,14 @@
     </div>
 
     <button type="submit" class="btn btn-success btn-block">
-        Create Vehicle
+        @ButtonText
     </button>
 
 </EditForm>
 
 
 @code {
-    Vehicle vehicle = new Vehicle();
-    private IList<Staff>? Staffs;
-    private IList<Customer>? Customers;
-    private IList<Vehicle>? Vehicles;
-
-    protected async override Task OnInitializedAsync()
-    {
-        Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
-        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
-        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
-    }
-
-    private async Task CreateVehicle()
-    {
-        await _client.PostAsJsonAsync(Endpoints.VehiclesEndpoint, vehicle);
-        _navManager.NavigateTo("/vehicles");
-    }
+    [Parameter] public Vehicle? vehicle { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
 }
