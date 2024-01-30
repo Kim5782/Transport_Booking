@@ -51,7 +51,8 @@ else
                 <th>Customer </th>
                 <th>Vehicle </th>
                 <th>Date </th>
-                <th>Time </th>
+                <th>Duration in Days</th>
+                @*<th>Time </th>*@
                 <th>Pickup Location </th>
                 <th>Drop-off location </th>
                 <th>Actions </th>
@@ -65,8 +66,9 @@ else
                     <td>@TransportBooking.Staff.StaffName</td>
                     <td>@TransportBooking.Customer.Name</td>
                     <td>@TransportBooking.Vehicle.Model</td>
-                    <td>@TransportBooking.Date</td>
-                    <td>@TransportBooking.Time</td>
+                    <td>@TransportBooking.DateIn</td>
+                    <td>@(TransportBooking.DateOut != nullDT ? (TransportBooking.DateIn - TransportBooking.DateOut).TotalDays.ToString() : "To Be Determined") </td>
+                    @*<td>@TransportBooking.Time</td>*@
                     <td>@TransportBooking.PickupLocation</td>
                     <td>@TransportBooking.DropOffLocation</td>
                     <td>
@@ -90,6 +92,8 @@ else
 
 @code {
     private List<TransportBooking>? transportbookings;
+    private DateTime nullDT = new DateTime(1, 1, 1, 0, 0, 0);
+
     protected async override Task OnInitializedAsync()
     {
         transportbookings = await _client.GetFromJsonAsync<List<TransportBooking>>($"{Endpoints.TransportBookingsEndpoint}");
@@ -99,7 +103,7 @@ else
         if (transportbookings != null)
         {
             var TransportBooking = transportbookings.First(q => q.Id == TransportBookingId);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {TransportBooking.Date}?");
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {TransportBooking.DateIn}?");
             if (confirm)
             {
                 await _client.DeleteAsync($"{Endpoints.TransportBookingsEndpoint}/{TransportBookingId}");

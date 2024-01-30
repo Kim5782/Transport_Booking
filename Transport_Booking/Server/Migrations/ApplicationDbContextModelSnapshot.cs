@@ -448,7 +448,7 @@ namespace Transport_Booking.Server.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<int?>("TransportBookingsId")
+                    b.Property<int>("TransportBookingsId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -487,7 +487,7 @@ namespace Transport_Booking.Server.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TransportBookingsId")
+                    b.Property<int>("TransportBookingsId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -574,13 +574,16 @@ namespace Transport_Booking.Server.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("DateIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOut")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateUpdated")
@@ -592,16 +595,13 @@ namespace Transport_Booking.Server.Migrations
                     b.Property<string>("PickupLocation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StaffId")
+                    b.Property<int>("StaffId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("VehicleId")
+                    b.Property<int>("VehicleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -739,7 +739,9 @@ namespace Transport_Booking.Server.Migrations
                 {
                     b.HasOne("Transport_Booking.Shared.Domain.TransportBooking", "TransportBookings")
                         .WithMany()
-                        .HasForeignKey("TransportBookingsId");
+                        .HasForeignKey("TransportBookingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("TransportBookings");
                 });
@@ -748,7 +750,9 @@ namespace Transport_Booking.Server.Migrations
                 {
                     b.HasOne("Transport_Booking.Shared.Domain.TransportBooking", "TransportBookings")
                         .WithMany()
-                        .HasForeignKey("TransportBookingsId");
+                        .HasForeignKey("TransportBookingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("TransportBookings");
                 });
@@ -757,15 +761,21 @@ namespace Transport_Booking.Server.Migrations
                 {
                     b.HasOne("Transport_Booking.Shared.Domain.Customer", "Customer")
                         .WithMany("TransportBookings")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Transport_Booking.Shared.Domain.Staff", "Staff")
                         .WithMany()
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Transport_Booking.Shared.Domain.Vehicle", "Vehicle")
                         .WithMany("TransportBookings")
-                        .HasForeignKey("VehicleId");
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
