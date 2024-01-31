@@ -60,9 +60,9 @@ namespace Transport_Booking.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -136,9 +136,9 @@ namespace Transport_Booking.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StaffName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffPosition = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffContact = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StaffName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StaffPosition = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StaffContact = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -287,9 +287,9 @@ namespace Transport_Booking.Server.Migrations
                     VehicleId = table.Column<int>(type: "int", nullable: false),
                     StaffId = table.Column<int>(type: "int", nullable: false),
                     DateIn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateOut = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PickupLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DropOffLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOut = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PickupLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DropOffLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -324,7 +324,7 @@ namespace Transport_Booking.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Comments = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Rating = table.Column<double>(type: "float", nullable: false),
                     TransportBookingsId = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),

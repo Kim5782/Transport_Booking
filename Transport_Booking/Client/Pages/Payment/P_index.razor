@@ -17,7 +17,6 @@
     <a href="authentication/login">Login</a>
     <a href="/about-us">About Us</a>
     <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
     <a href="/feedbacks">Contact Us</a>
     <a href="/vehicles">Vehicles</a>]
     <a href="/customers">Customers</a>
@@ -48,7 +47,7 @@ else
                 <th>Price </th>
                 <th>Date </th>
                 <th>Payment Method</th>
-                <th>Transport Booking Id </th>
+                <th>Transport Booking Date </th>
                 <th>Actions </th>
             </tr>
         </thead>
@@ -60,7 +59,7 @@ else
                     <td>@Payment.Amount</td>
                     <td>@Payment.PaymentDate</td>
                     <td>@Payment.PaymentMethod</td>
-                    <td>@Payment.TransportBookings.Id</td>
+                    <td>@Payment.TransportBookings.DateIn</td>
                     <td>
                         <a href="/Payment/view/@Payment.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>

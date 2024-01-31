@@ -9,7 +9,6 @@
     <a href="authentication/login">Login</a>
     <a href="/about-us">About Us</a>
     <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
     <a href="/feedbacks">Contact Us</a>
     <a href="/vehicles">Vehicles</a>]
     <a href="/customers">Customers</a>
@@ -20,46 +19,7 @@
 
 <h3>CreateFeedback</h3>
 
-<EditForm Model="@feedback" OnValidSubmit="CreateFeedbacks">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label>Date of Booking:</label>
-        <div>
-            <InputSelect @bind-Value="feedback.TransportBookingsId" class="form-control">
-            <option value="">--Select Booking Date--</option>
-            @if (TransportBookings != null)
-            {
-                foreach(var transportbooking in TransportBookings)
-                {
-                    <option value="@transportbooking.Id">@transportbooking.DateIn</option>
-                }
-            }
-            </InputSelect>
-            <ValidationMessage For="@(() => feedback.TransportBookingsId)"/>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Leave some feedback!: </label>
-        <div>
-            <InputText @bind-Value="@feedback.Comments" class="form-control" />
-            <ValidationMessage For="@(() => feedback.Comments )" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Rating: </label>
-        <div>
-            <InputNumber @bind-Value="@feedback.Rating" class="form-control" />
-            <ValidationMessage For="@(() => feedback.Rating)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Feedback
-    </button>
- </EditForm>
+<FormComponent ButtonText="Create Feedback" feedback="feedback" OnValidSubmit="@CreateFeedbacks" />
 
 @code {
     Feedback feedback = new Feedback();

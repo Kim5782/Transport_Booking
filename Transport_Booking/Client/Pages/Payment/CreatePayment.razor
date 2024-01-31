@@ -9,7 +9,6 @@
     <a href="authentication/login">Login</a>
     <a href="/about-us">About Us</a>
     <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
     <a href="/feedbacks">Contact Us</a>
     <a href="/vehicles">Vehicles</a>]
     <a href="/customers">Customers</a>
@@ -20,64 +19,7 @@
 
 <h3>CreatePayment</h3>
 
-<EditForm Model="@payments" OnValidSubmit="CreatePayments">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label>Date of Booking:</label>
-        <div>
-            <InputSelect @bind-Value="payments.TransportBookingsId" class="form-control">
-                <option value="">--Select Booking Date--</option>
-                @if (TransportBookings != null)
-                {
-                    foreach (var transportbooking in TransportBookings)
-                    {
-                        <option value="@transportbooking.Id">@transportbooking.DateIn</option>
-                    }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => payments.TransportBookingsId)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Payment Amount: </label>
-        <div>
-            <InputNumber @bind-Value="@payments.Amount" class="form-control" />
-            <ValidationMessage For="@(() => payments.Amount )" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Date:</label>
-        <div>
-            <InputDate @bind-Value="payments.PaymentDate" class="form-control" />
-            @if (payments.Id > 0)
-            {
-                <div class="form-group">
-                    <label>Date: </label>
-                    <div>
-                        <InputDate @bind-Value="@payments.PaymentDate" class="form-control" />
-                        <ValidationMessage For="@(() => payments.PaymentDate)" />
-                    </div>
-                </div>
-            }
-            <ValidationMessage For="@(() => payments.PaymentDate)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Method: </label>
-        <div>
-            <InputText @bind-Value="@payments.PaymentMethod" class="form-control" />
-            <ValidationMessage For="@(() => payments.PaymentMethod)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Make Payment
-    </button>
-</EditForm>
+<FormComponent ButtonText="Create Payment" payments="payments" OnValidSubmit="@CreatePayments" />
 
 @code {
     Payment payments = new Payment();

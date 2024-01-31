@@ -18,7 +18,6 @@
     <a href="authentication/login">Login</a>
     <a href="/about-us">About Us</a>
     <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
     <a href="/feedbacks">Contact Us</a>
     <a href="/vehicles">Vehicles</a>]
     <a href="/customers">Customers</a>
@@ -68,8 +67,9 @@ else
                     <td>@TransportBooking.Customer.Name</td>
                     <td>@TransportBooking.Vehicle.Model</td>
                     <td>@TransportBooking.DateIn</td>
-                    <td>@(TransportBooking.DateOut != nullDT ? (TransportBooking.DateOut - TransportBooking.DateIn).TotalDays.ToString() : "To Be Determined") </td>
+                    @*<td>@(TransportBooking.DateOut != nullDT ? (TransportBooking.DateOut - TransportBooking.DateIn).TotalDays.ToString() : "To Be Determined") </td>*@
                     @*<td>@TransportBooking.Time</td>*@
+                    <td>@(TransportBooking.DateOut != null ? (TransportBooking.DateOut.Value - TransportBooking.DateIn).TotalDays.ToString() : "To Be Determined") </td>
                     <td>@TransportBooking.PickupLocation</td>
                     <td>@TransportBooking.DropOffLocation</td>
                     <td>

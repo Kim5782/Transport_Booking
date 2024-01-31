@@ -1,9 +1,7 @@
-﻿@page "/TransportBooking/edit/{id:int}"
+﻿@page "/payment/edit/{id:int}"
 @inject HttpClient _client
 @inject NavigationManager _navManager
-
-<h3>EditTB</h3>
-
+<h3>EditP</h3>
 <div class="navbar">
     <a href="authentication/profile">Profile</a>
     <a href="/">Home</a>
@@ -19,22 +17,21 @@
     <a href="/payments">Payment</a>
 </div>
 
-
-<FormComponent ButtonText="Update" OnValidSubmit="EditTransportBooking" transportBooking="transportBookings" />
+<FormComponent ButtonText="Update" OnValidSubmit="Editpayment" payments ="payments" />
 
 @code {
     [Parameter] public int id { get; set; }
-    TransportBooking? transportBookings = new TransportBooking();
+    Payment? payments = new Payment();
 
     protected async override Task OnParametersSetAsync()
     {
-        transportBookings = await
-       _client.GetFromJsonAsync<TransportBooking>($"{Endpoints.TransportBookingsEndpoint}/{id}");
+        payments = await
+       _client.GetFromJsonAsync<Payment>($"{Endpoints.PaymentsEndpoint}/{id}");
     }
 
-    async Task EditTransportBooking()
+    async Task Editpayment()
     {
-        await _client.PutAsJsonAsync($"{Endpoints.TransportBookingsEndpoint}/{id}", transportBookings);
-        _navManager.NavigateTo("/transportbookings/");
+        await _client.PutAsJsonAsync($"{Endpoints.PaymentsEndpoint}/{id}", payments);
+        _navManager.NavigateTo("/payments/");
     }
 }

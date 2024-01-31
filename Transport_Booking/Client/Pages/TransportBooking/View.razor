@@ -1,0 +1,15 @@
+﻿@page "/transportbooking/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View</h3>
+<FormComponent transportBooking ="transportbookings" Disabled="true" />
+@code {
+    [Parameter] public int id { get; set; }
+    TransportBooking? transportbookings = new TransportBooking();
+    protected async override Task OnParametersSetAsync()
+    {
+        transportbookings = await
+       _client.GetFromJsonAsync<TransportBooking>($"{Endpoints.TransportBookingsEndpoint}/{id}");
+    }
+}

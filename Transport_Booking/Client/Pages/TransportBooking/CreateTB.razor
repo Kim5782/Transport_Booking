@@ -9,7 +9,6 @@
     <a href="authentication/login">Login</a>
     <a href="/about-us">About Us</a>
     <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
     <a href="/feedbacks">Contact Us</a>
     <a href="/vehicles">Vehicles</a>]
     <a href="/customers">Customers</a>
@@ -21,118 +20,7 @@
 <h3>CreateTB</h3>
 <br />
 
-<EditForm Model="@transportBooking" OnValidSubmit="CreateTransportBooking">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label>Staff:</label>
-        <div>
-            <InputSelect @bind-Value="transportBooking.StaffId" class="form-control">
-            <option value="">--Select Staff--</option>
-            @if (Staffs != null)
-            {
-                foreach(var staff in Staffs)
-                {
-                    <option value="@staff.Id">@staff.StaffName</option>
-                }
-            }
-            </InputSelect>
-            <ValidationMessage For="@(() => transportBooking.StaffId)"/>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Customer:</label>
-        <div>
-            <InputSelect @bind-Value="transportBooking.CustomerId" class="form-control">
-                <option value="">--Select Customer--</option>
-                @if (Customers != null)
-                {
-                    foreach (var customer in Customers)
-                    {
-                        <option value="@customer.Id">@customer.Name</option>
-                    }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => transportBooking.CustomerId)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Vehicle:</label>
-        <div>
-            <InputSelect @bind-Value="transportBooking.VehicleId" class="form-control">
-                <option text="">--Select Vehicle--</option>
-                @if (Vehicles != null)
-                {
-                    foreach (var vehicle in Vehicles)
-                    {
-                        <option value="@vehicle.Id">@vehicle.Model</option>
-                    }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => transportBooking.VehicleId)" />
-        </div>
-    </div>
-
-      <div class="form-group">
-        <label>Date:</label>
-        <div>
-            <InputDate @bind-Value="transportBooking.DateIn" class="form-control" />
-            @if (transportBooking.Id > 0)
-            {
-                <div class="form-group">
-                    <label>Date: </label>
-                    <div>
-                        <InputDate @bind-Value="@transportBooking.DateIn" class="form-control" />
-                        <ValidationMessage For="@(() => transportBooking.DateIn)" />
-                    </div>
-                </div>
-            }
-            <ValidationMessage For="@(() => transportBooking.DateIn)" />
-        </div>
-      </div>
-
-    <div class="form-group">
-        <label>Date:</label>
-        <div>
-            <InputDate @bind-Value="transportBooking.DateOut" class="form-control" />
-            @if (transportBooking.Id > 0)
-            {
-                <div class="form-group">
-                    <label>Date: </label>
-                    <div>
-                        <InputDate @bind-Value="@transportBooking.DateOut" class="form-control" />
-                        <ValidationMessage For="@(() => transportBooking.DateOut)" />
-                    </div>
-                </div>
-            }
-            <ValidationMessage For="@(() => transportBooking.DateOut)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Pick-up Location: </label>
-        <div>
-            <InputText @bind-Value="@transportBooking.PickupLocation" class="form-control" />
-            <ValidationMessage For="@(() => transportBooking.PickupLocation )" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Drop-off Location: </label>
-        <div>
-            <InputText @bind-Value="@transportBooking.DropOffLocation" class="form-control" />
-            <ValidationMessage For="@(() => transportBooking.DropOffLocation)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Transport Booking
-    </button>
-
-</EditForm>
-
+<FormComponent ButtonText="Create Booking" transportBooking="transportBooking" OnValidSubmit="@CreateTransportBooking" />
 
 @code {
     TransportBooking transportBooking = new TransportBooking();

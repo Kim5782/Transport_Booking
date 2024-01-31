@@ -9,7 +9,6 @@
     <a href="authentication/login">Login</a>
     <a href="/about-us">About Us</a>
     <a href="/pg">Price Guide</a>
-    <a href="/services">Services</a>
     <a href="/feedbacks">Contact Us</a>
     <a href="/vehicles">Vehicles</a>]
     <a href="/customers">Customers</a>
@@ -19,39 +18,7 @@
 </div>
 
 <h3>StaffCreate</h3>
-<EditForm Model="@staff" OnValidSubmit="CreateStaff">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label>Staff Name: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffName" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffName )" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Staff Contact: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffContact" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffContact )" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Staff Position: </label>
-        <div>
-            <InputText @bind-Value="@staff.StaffPosition" class="form-control" />
-            <ValidationMessage For="@(() => staff.StaffPosition )" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Staff
-    </button>
-
-</EditForm>
-
+<FormComponent ButtonText="Create Staff" staff="staff" OnValidSubmit="@CreateStaff" />
 @code {
     Staff staff = new Staff();
     private IList<Staff>? Staffs;
