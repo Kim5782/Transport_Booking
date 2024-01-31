@@ -1,0 +1,41 @@
+﻿@page "/TransportBooking/create"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>EditTB</h3>
+
+<div class="navbar">
+    <a href="authentication/profile">Profile</a>
+    <a href="/">Home</a>
+    <a href="authentication/register">Register</a>
+    <a href="authentication/login">Login</a>
+    <a href="/about-us">About Us</a>
+    <a href="/pg">Price Guide</a>
+    <a href="/services">Services</a>
+    <a href="/feedbacks">Contact Us</a>
+    <a href="/vehicles">Vehicles</a>]
+    <a href="/customers">Customers</a>
+    <a href="/staffs">Staffs</a>
+    <a href="/transportbookings">Bookings</a>
+    <a href="/payments">Payment</a>
+</div>
+
+
+<FormComponent ButtonText="Update" OnValidSubmit="EditTransportBooking" transportBooking="transportBookings" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    TransportBooking? transportBookings = new TransportBooking();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        transportBookings = await
+       _client.GetFromJsonAsync<TransportBooking>($"{Endpoints.TransportBookingsEndpoint}/{id}");
+    }
+
+    async Task EditTransportBooking()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.TransportBookingsEndpoint}/{id}", transportBookings);
+        _navManager.NavigateTo("/transportbookings/");
+    }
+}

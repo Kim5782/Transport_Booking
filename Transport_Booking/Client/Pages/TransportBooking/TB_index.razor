@@ -67,7 +67,7 @@ else
                     <td>@TransportBooking.Customer.Name</td>
                     <td>@TransportBooking.Vehicle.Model</td>
                     <td>@TransportBooking.DateIn</td>
-                    <td>@(TransportBooking.DateOut != nullDT ? (TransportBooking.DateIn - TransportBooking.DateOut).TotalDays.ToString() : "To Be Determined") </td>
+                    <td>@(TransportBooking.DateOut != nullDT ? (TransportBooking.DateOut - TransportBooking.DateIn).TotalDays.ToString() : "To Be Determined") </td>
                     @*<td>@TransportBooking.Time</td>*@
                     <td>@TransportBooking.PickupLocation</td>
                     <td>@TransportBooking.DropOffLocation</td>
