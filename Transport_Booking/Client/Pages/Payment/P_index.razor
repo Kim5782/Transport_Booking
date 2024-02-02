@@ -8,7 +8,8 @@
 @using System.Net.Http.Json;
 @using Transport_Booking.Client.Static;
 @using Transport_Booking.Shared.Domain;
-
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <div class="navbar">
     <a href="authentication/profile">Profile</a>
@@ -40,7 +41,7 @@
 }
 else
 {
-    <table class="table-responsive">
+    <table class="table-responsive" id ="PaymentTable">
         <thead>
             <tr>
                 <th>Payment Id </th>
@@ -83,6 +84,7 @@ else
     private List<Payment>? Payments;
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
     }
     async Task Delete(int PaymentId)
@@ -98,5 +100,15 @@ else
             }
 
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("DataTablesDispose", "#PaymentTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#PaymentTable");
     }
 }

@@ -3,6 +3,9 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 @using System.ComponentModel.DataAnnotations;
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
+
 
 
 <div class="navbar">
@@ -34,7 +37,7 @@
 }
 else
 {
-    <table class="table-responsive">
+    <table class="table-responsive" id="VehicleTable">
         <thead>
             <tr>
                 <th>Model </th>
@@ -80,6 +83,7 @@ else
     private List<Vehicle>? Vehicles;
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
     }
     async Task Delete(int vehicleId)
@@ -95,5 +99,15 @@ else
             }
 
         }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("DataTablesDispose", "#VehicleTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#VehicleTable");
     }
 }
