@@ -1,113 +1,134 @@
 ﻿@page "/staffs/"
 @inject HttpClient _client
 @inject IJSRuntime js
+@inject NavigationManager NavigationManager
 @attribute [Authorize]
+
 @using System.ComponentModel.DataAnnotations;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.JSInterop;
 @using System.Net.Http.Json;
+@using Transport_Booking.Client.Services;
 @using Transport_Booking.Client.Static;
 @using Transport_Booking.Shared.Domain;
 @inject HttpInterceptorService _interceptor
 @implements IDisposable
-
-
 
 <div class="navbar">
     <a href="authentication/profile">Profile</a>
     <a href="/">Home</a>
     <a href="authentication/register">Register</a>
     <a href="authentication/login">Login</a>
-    <a href="/about-us">About Us</a>
-    <a href="/pg">Price Guide</a>
-    <a href="/feedbacks">Contact Us</a>
-    <a href="/vehicles">Vehicles</a>]
-    <a href="/customers">Customers</a>
-    <a href="/staffs">Staffs</a>
-    <a href="/transportbookings">Bookings</a>
-    <a href="/payments">Payment</a>
+    <a href="about-us">About Us</a>
+    <a href="pg">Price Guide</a>
+    <a href="feedbacks">Contact Us</a>
+    <a href="vehicles">Vehicles</a>
+    <a href="customers">Customers</a>
+    <a href="staffs">Staffs</a>
+    <a href="transportbookings">Bookings</a>
+    <a href="payments">Payment</a>
 </div>
 
+<div class="container mt-4">
+    <h3 class="mb-3">Staff Members</h3>
 
-<h3 class="card-title">Add staff</h3>
+    <!-- Create New Staff Button -->
+    <a href="staffs/create" class="btn btn-primary mb-3">
+        <span class="oi oi-plus"></span> Create New Staff
+    </a>
 
-<a href="/staffs/create" class="btn btn-secondary">
-    <span class="oi oi-plus"></span>
-    Create New Staff
-</a>
-
-@if (Staffs == null)
-{
-    <div class="alert alert-info">Loading Staffs...</div>
-}
-else
-{
-    <table class="table-responsive" id="StaffTable">
-        <thead>
-            <tr>
-                <th>Staff Id </th>
-                <th>Name </th>
-                <th>Position </th>
-                <th>Contact </th>
-                <th>Actions </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var staff in Staffs)
-            {
+    <!-- Staffs Table -->
+    @if (Staffs == null)
+    {
+        <div class="alert alert-info">Loading Staffs...</div>
+    }
+    else
+    {
+        <table class="table table-hover" id="StaffTable">
+            <thead class="thead-light">
                 <tr>
-                    <td>@staff.Id</td>
-                    <td>@staff.StaffName</td>
-                    <td>@staff.StaffPosition</td>
-                    <td>@staff.StaffContact</td>
-                    <td>
-                        <a href="/staff/view/@staff.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/staff/edit/@staff.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(staff.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-
-
+                    <th>Staff Id</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Contact</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var staff in Staffs)
+                {
+                    <tr>
+                        <td>@staff.Id</td>
+                        <td>@staff.StaffName</td>
+                        <td>@staff.StaffPosition</td>
+                        <td>@staff.StaffContact</td>
+                        <td class="actions-cell">
+                            <a href="staff/view/@staff.Id" class="btn btn-info action-button">
+                                <span class="oi oi-eye"></span>
+                            </a>
+                            <a href="staff/edit/@staff.Id" class="btn btn-success action-button">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger action-button" @onclick="@(()=>Delete(staff.Id))">
+                                <span class="oi oi-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
     private List<Staff>? Staffs;
-    protected async override Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
         _interceptor.MonitorEvent();
         Staffs = await _client.GetFromJsonAsync<List<Staff>>($"{Endpoints.StaffsEndpoint}");
     }
+
     async Task Delete(int staffId)
     {
         if (Staffs != null)
         {
-            var staff = Staffs.First(q => q.Id == staffId);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {staff.StaffName}?");
-            if (confirm)
+            var staff = Staffs.FirstOrDefault(s => s.Id == staffId);
+            if (staff != null)
             {
-                await _client.DeleteAsync($"{Endpoints.StaffsEndpoint}/{staffId}");
-                await OnInitializedAsync();
+                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {staff.StaffName}?");
+                if (confirm)
+                {
+                    await _client.DeleteAsync($"{Endpoints.StaffsEndpoint}/{staffId}");
+                    Staffs.Remove(staff);
+                    StateHasChanged();
+                }
             }
-
         }
-    }
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        await js.InvokeVoidAsync("DataTablesDispose", "#StaffTable");
     }
 
     public void Dispose()
     {
         _interceptor.DisposeEvent();
-        js.InvokeVoidAsync("DataTablesDispose", "#StaffTable");
     }
 }
+
+<style>
+    .container {
+        max-width: 1200px;
+    }
+
+    #StaffTable th, #StaffTable td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .actions-cell {
+        display: flex;
+        justify-content: center;
+    }
+
+    .action-button {
+        margin: 0 2px;
+    }
+</style>

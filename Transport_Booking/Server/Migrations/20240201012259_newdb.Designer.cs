@@ -12,7 +12,7 @@ using Transport_Booking.Server.Data;
 namespace Transport_Booking.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240131135759_newdb")]
+    [Migration("20240201012259_newdb")]
     partial class newdb
     {
         /// <inheritdoc />

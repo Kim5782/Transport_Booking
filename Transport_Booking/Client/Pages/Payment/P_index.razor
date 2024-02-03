@@ -1,11 +1,13 @@
 ﻿@page "/payments/"
 @inject HttpClient _client
 @inject IJSRuntime js
+@inject NavigationManager NavigationManager
 @attribute [Authorize]
 @using System.ComponentModel.DataAnnotations;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.JSInterop;
 @using System.Net.Http.Json;
+@using Transport_Booking.Client.Services;
 @using Transport_Booking.Client.Static;
 @using Transport_Booking.Shared.Domain;
 @inject HttpInterceptorService _interceptor
@@ -16,99 +18,118 @@
     <a href="/">Home</a>
     <a href="authentication/register">Register</a>
     <a href="authentication/login">Login</a>
-    <a href="/about-us">About Us</a>
-    <a href="/pg">Price Guide</a>
-    <a href="/feedbacks">Contact Us</a>
-    <a href="/vehicles">Vehicles</a>]
-    <a href="/customers">Customers</a>
-    <a href="/staffs">Staffs</a>
-    <a href="/transportbookings">Bookings</a>
-    <a href="/payments">Payment</a>
+    <a href="about-us">About Us</a>
+    <a href="pg">Price Guide</a>
+    <a href="feedbacks">Contact Us</a>
+    <a href="vehicles">Vehicles</a>
+    <a href="customers">Customers</a>
+    <a href="staffs">Staffs</a>
+    <a href="transportbookings">Bookings</a>
+    <a href="payments">Payment</a>
 </div>
 
+<div class="container mt-4">
+    <h3 class="mb-3">Payments</h3>
 
+    <!-- Create New Payment Button -->
+    <a href="payments/create" class="btn btn-primary mb-3">
+        <span class="oi oi-plus"></span> Make New Payment
+    </a>
 
-<h3 class="card-title">Add Payment</h3>
-
-<a href="/payments/create" class="btn btn-secondary">
-    <span class="oi oi-plus"></span>
-    Make New Payment
-</a>
-
-@if (Payments == null)
-{
-    <div class="alert alert-info">Loading Payments...</div>
-}
-else
-{
-    <table class="table-responsive" id ="PaymentTable">
-        <thead>
-            <tr>
-                <th>Payment Id </th>
-                <th>Price </th>
-                <th>Date </th>
-                <th>Payment Method</th>
-                <th>Transport Booking Date </th>
-                <th>Actions </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var Payment in Payments)
-            {
+    <!-- Payments Table -->
+    @if (Payments == null)
+    {
+        <div class="alert alert-info">Loading Payments...</div>
+    }
+    else
+    {
+        <table class="table table-hover" id="PaymentTable">
+            <thead class="thead-light">
                 <tr>
-                    <td>@Payment.Id</td>
-                    <td>@Payment.Amount</td>
-                    <td>@Payment.PaymentDate</td>
-                    <td>@Payment.PaymentMethod</td>
-                    <td>@Payment.TransportBookings.DateIn</td>
-                    <td>
-                        <a href="/Payment/view/@Payment.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/Payment/edit/@Payment.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(Payment.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-
-
+                    <th>Payment Id</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Payment Method</th>
+                    <th>Transport Booking Date</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var payment in Payments)
+                {
+                    <tr>
+                        <td>@payment.Id</td>
+                        <td>@payment.Amount</td>
+                        <td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
+                        <td>@payment.PaymentMethod</td>
+                        <td>@payment.TransportBookings.DateIn.ToString("dd/MM/yyyy")</td>
+                        <td class="actions-cell">
+                            <a href="/Payment/view/@payment.Id" class="btn btn-info action-button">
+                                <span class="oi oi-eye"></span>
+                            </a>
+                            <a href="/Payment/edit/@payment.Id" class="btn btn-success action-button">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger action-button" @onclick="@(()=>Delete(payment.Id))">
+                                <span class="oi oi-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
     private List<Payment>? Payments;
-    protected async override Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
         _interceptor.MonitorEvent();
         Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
     }
-    async Task Delete(int PaymentId)
+
+    private async Task Delete(int paymentId)
     {
         if (Payments != null)
         {
-            var Payment = Payments.First(q => q.Id == PaymentId);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {Payment.Id}?");
-            if (confirm)
+            var payment = Payments.FirstOrDefault(p => p.Id == paymentId);
+            if (payment != null)
             {
-                await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{PaymentId}");
-                await OnInitializedAsync();
+                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete payment with ID {payment.Id}?");
+                if (confirm)
+                {
+                    await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{paymentId}");
+                    Payments.Remove(payment);
+                    StateHasChanged();
+                }
             }
-
         }
-    }
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        await js.InvokeVoidAsync("DataTablesDispose", "#PaymentTable");
     }
 
     public void Dispose()
     {
         _interceptor.DisposeEvent();
-        js.InvokeVoidAsync("DataTablesDispose", "#PaymentTable");
     }
 }
+
+<style>
+    .container {
+        max-width: 1200px;
+    }
+
+    #PaymentTable th, #PaymentTable td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .actions-cell {
+        display: flex;
+        justify-content: center;
+    }
+
+    .action-button {
+        margin: 0 2px; /* Adjust spacing between buttons here */
+    }
+</style>
