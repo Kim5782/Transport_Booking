@@ -1,0 +1,79 @@
+﻿@page "/discounts"
+@inject NavigationManager NavigationManager
+
+<h2 class="title">Welcome to Our Special Offer!</h2>
+
+<div class="discount-offer">
+    <h3>Exclusive 40% Discount for New Members</h3>
+    <p>Join us today and enjoy an incredible <strong>40% discount</strong> when you book a car for more than one day. Experience the best of our services at unbeatable prices.</p>
+    <p>This offer is a token of our appreciation for choosing QuickSilver Transportation and is exclusively available to our new members.</p>
+
+    <div class="offer-details">
+        <h4>How to Enjoy This Offer? </h4>
+        <ol>
+            <li>Sign up as a new member on our platform.</li>
+            <li>Choose your desired car and book for more than one day.</li>
+            <li>The discount will be automatically applied to your booking.</li>
+        </ol>
+    </div>
+
+    <div class="call-to-action">
+        <button @onclick="NavigateToBooking" class="btn btn-primary">Book Now</button>
+        <p>Don't miss out on this exclusive deal. Begin your journey with QuickSilver Transportation today!</p>
+    </div>
+</div>
+
+<style>
+    .discount-offer {
+        background-color: #fff4e5;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+        .title {
+        text-align: center;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+       
+       }
+
+        .discount-offer h3 {
+            color: #d67d00;
+            margin-bottom: 15px;
+        }
+
+    .offer-details {
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    .call-to-action {
+        margin-top: 30px;
+    }
+
+        .call-to-action .btn-primary {
+            background-color: #d67d00;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .call-to-action .btn-primary:hover {
+                background-color: #b56500;
+            }
+</style>
+
+@code {
+    private void NavigateToBooking()
+    {
+        NavigationManager.NavigateTo("/transportbookings/create");
+    }
+}

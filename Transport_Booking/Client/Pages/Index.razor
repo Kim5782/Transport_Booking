@@ -2,6 +2,7 @@
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject NavigationManager NavigationManager
 
 @using System.ComponentModel.DataAnnotations;
 
@@ -20,6 +21,17 @@
     <a href="/payments">Payment</a>
 </div>
 
+<div class="search-notification-bar">
+    <div class="search-bar">
+        <input type="text" placeholder="Search..." aria-label="Search" @oninput="HandleSearch" class="search-input" />
+        <button type="submit" aria-label="Submit Search" @onclick="SubmitSearch" class="search-btn"><i class="oi oi-magnifying-glass"></i></button>
+    </div>
+    <button aria-label="Discount Notifications" @onclick="NavigateToDiscounts" class="notification-btn">
+        <i class="oi oi-bell"></i><span class="badge">1</span>
+    </button>
+</div>
+
+
 
 <!-- Header -->
 <header class="header">
@@ -28,6 +40,9 @@
     <p> All you need to do is just simply click this button.</p>
     <button type="submit" onclick="location.href='/transportbookings'" class="btn btn-primary">Book Now!</button>
 </header>
+
+
+
 
 
 <div class="page-container">
@@ -112,3 +127,25 @@
         <p>- Mr. Patrick Tan</p>
     </div>
 </div>
+
+<MainFooter></MainFooter>
+
+@code {
+    private string searchTerm = "";
+
+    private void HandleSearch(ChangeEventArgs e)
+    {
+        searchTerm = e.Value?.ToString();
+    }
+
+    private void SubmitSearch()
+    {
+        // Redirect to the register page regardless of the search term
+        Navigation.NavigateTo("/authentication/register");
+    }
+
+    private void NavigateToDiscounts()
+    {
+        Navigation.NavigateTo("/discounts");
+    }
+}
