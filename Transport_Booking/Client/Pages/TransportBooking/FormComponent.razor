@@ -60,44 +60,24 @@
     </div>
     </fieldset>
 
-    <fieldset disabled="@Disabled" >
-    <div class="form-group">
-        <label>Date In:</label>
-        <div>
-            <InputDate @bind-Value="transportBooking.DateIn" class="form-control" />
-            @if (transportBooking.Id > 0)
-            {
-                <div class="form-group">
-                    <label>Date: </label>
-                    <div>
-                        <InputDate @bind-Value="@transportBooking.DateIn" class="form-control" />
-                        <ValidationMessage For="@(() => transportBooking.DateIn)" />
-                    </div>
-                </div>
-            }
-            <ValidationMessage For="@(() => transportBooking.DateIn)" />
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Date In:</label>
+            <div>
+                <InputDate @bind-Value="transportBooking.DateIn" class="form-control" />
+                <ValidationMessage For="@(() => transportBooking.DateIn)" />
+            </div>
         </div>
-    </div>
     </fieldset>
 
-    <fieldset disabled="@Disabled" >
-    <div class="form-group">
-        <label>Date Out:</label>
-        <div>
-            <InputDate @bind-Value="transportBooking.DateOut" class="form-control" />
-            @if (transportBooking.Id > 0)
-            {
-                <div class="form-group">
-                    <label>Date: </label>
-                    <div>
-                        <InputDate @bind-Value="@transportBooking.DateOut" class="form-control" />
-                        <ValidationMessage For="@(() => transportBooking.DateOut)" />
-                    </div>
-                </div>
-            }
-            <ValidationMessage For="@(() => transportBooking.DateOut)" />
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Date Out:</label>
+            <div>
+                <InputDate @bind-Value="transportBooking.DateOut" class="form-control" />
+                <ValidationMessage For="@(() => transportBooking.DateOut)" />
+            </div>
         </div>
-    </div>
     </fieldset>
 
     <fieldset disabled="@Disabled" >
@@ -112,7 +92,7 @@
 
     <fieldset disabled="@Disabled" >
     <div class="form-group">
-        <label>Reason: </label>
+        <label>Drop-off Location: </label>
         <div>
             <InputText @bind-Value="@transportBooking.DropOffLocation" class="form-control" />
             <ValidationMessage For="@(() => transportBooking.DropOffLocation)" />

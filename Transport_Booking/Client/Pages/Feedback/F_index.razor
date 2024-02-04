@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+
 @using System.ComponentModel.DataAnnotations;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.JSInterop;
@@ -12,103 +13,123 @@
 @inject HttpInterceptorService _interceptor
 @implements IDisposable
 
-
-
 <div class="navbar">
     <a href="authentication/profile">Profile</a>
     <a href="/">Home</a>
     <a href="authentication/register">Register</a>
     <a href="authentication/login">Login</a>
-    <a href="/about-us">About Us</a>
-    <a href="/pg">Price Guide</a>
-    <a href="/feedbacks">Contact Us</a>
-    <a href="/vehicles">Vehicles</a>]
-    <a href="/customers">Customers</a>
-    <a href="/staffs">Staffs</a>
-    <a href="/transportbookings">Bookings</a>
-    <a href="/payments">Payment</a>
+    <a href="about-us">About Us</a>
+    <a href="pg">Price Guide</a>
+    <a href="feedbacks">Contact Us</a>
+    <a href="vehicles">Vehicles</a>
+    <a href="customers">Customers</a>
+    <a href="staffs">Staffs</a>
+    <a href="transportbookings">Bookings</a>
+    <a href="payments">Payment</a>
 </div>
 
+<div class="container mt-4">
+    <h3 class="mb-3">Customer Feedback</h3>
 
-<h3 class="card-title">Add Feedback</h3>
+    <!-- Create New Feedback Button -->
+    <a href="feedbacks/create" class="btn btn-primary mb-3">
+        <span class="oi oi-plus"></span> Make New Feedback
+    </a>
 
-<a href="/feedbacks/create" class="btn btn-secondary">
-    <span class="oi oi-plus"></span>
-    Make New Feedback
-</a>
-
-@if (Feedbacks== null)
-{
-    <div class="alert alert-info">Loading Feedbacks...</div>
-}
-else
-{
-    <table class="table-responsive" id="FeedbackTable">
-        <thead>
-            <tr>
-                <th>Feedback Id </th>
-                <th>Comments</th>
-                <th>Rating </th>
-                <th>Transport Booking Id </th>
-                <th>Actions </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var Feedback in Feedbacks)
-            {
+    <!-- Feedbacks Table -->
+    @if (Feedbacks == null)
+    {
+        <div class="alert alert-info">Loading Feedbacks...</div>
+    }
+    else
+    {
+        <table class="table table-hover" id="FeedbackTable">
+            <thead class="thead-light">
                 <tr>
-                    <td>@Feedback.Id</td>
-                    <td>@Feedback.Comments</td>
-                    <td>@Feedback.Rating</td>
-                    <td>@Feedback.TransportBookings.DateIn</td>
-                    <td>
-                        <a href="/Feedback/view/@Feedback.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/Feedback/edit/@Feedback.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(Feedback.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-
-
+                    <th>Feedback Id</th>
+                    <th>Comments</th>
+                    <th>Rating</th>
+                    <th>Transport Booking Id</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var feedback in Feedbacks)
+                {
+                    <tr>
+                        <td>@feedback.Id</td>
+                        <td>@feedback.Comments</td>
+                        <td>@feedback.Rating</td>
+                        <td>@feedback.TransportBookings.DateIn</td> <!-- Assuming you have a TransportBookingId -->
+                        <td class="actions-cell">
+                            <a href="feedback/view/@feedback.Id" class="btn btn-info action-button">
+                                <span class="oi oi-eye"></span>
+                            </a>
+                            <a href="feedback/edit/@feedback.Id" class="btn btn-warning action-button">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger action-button" @onclick="@(()=>Delete(feedback.Id))">
+                                <span class="oi oi-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
     private List<Feedback>? Feedbacks;
-    protected async override Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
         _interceptor.MonitorEvent();
-        Feedbacks= await _client.GetFromJsonAsync<List<Feedback>>($"{Endpoints.FeedbacksEndpoint}");
+        Feedbacks = await _client.GetFromJsonAsync<List<Feedback>>($"{Endpoints.FeedbacksEndpoint}");
     }
-    async Task Delete(int FeedbackId)
-    {
-        if (Feedbacks!= null)
-        {
-            var Feedback = Feedbacks.First(q => q.Id == FeedbackId);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {Feedback.Id}?");
-            if (confirm)
-            {
-                await _client.DeleteAsync($"{Endpoints.FeedbacksEndpoint}/{FeedbackId}");
-                await OnInitializedAsync();
-            }
 
-        }
-    }
-    protected async override Task OnAfterRenderAsync(bool firstRender)
+    async Task Delete(int feedbackId)
     {
-        await js.InvokeVoidAsync("DataTablesDispose", "#FeedbackTable");
+        if (Feedbacks != null)
+        {
+            var feedback = Feedbacks.FirstOrDefault(f => f.Id == feedbackId);
+            if (feedback != null)
+            {
+                var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete feedback from {feedback.Comments}?"); // Adjusted to use Comments for user context
+                if (confirm)
+                {
+                    await _client.DeleteAsync($"{Endpoints.FeedbacksEndpoint}/{feedbackId}");
+                    Feedbacks.Remove(feedback);
+                    StateHasChanged();
+                }
+            }
+        }
     }
 
     public void Dispose()
     {
         _interceptor.DisposeEvent();
-        js.InvokeVoidAsync("DataTablesDispose", "#FeedbackTable");
     }
 }
+
+<style>
+    .container {
+        max-width: 1200px;
+    }
+
+    #FeedbackTable th, #FeedbackTable td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .actions-cell {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Provides consistent spacing between buttons */
+    }
+
+    .action-button {
+        /* Styling for buttons if needed */
+    }
+    /* Additional global styles can be placed here */
+</style>

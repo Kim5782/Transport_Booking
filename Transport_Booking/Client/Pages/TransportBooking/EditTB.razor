@@ -36,5 +36,36 @@
     {
         await _client.PutAsJsonAsync($"{Endpoints.TransportBookingsEndpoint}/{id}", transportBookings);
         _navManager.NavigateTo("/transportbookings/");
+
+        try
+        {
+            var response = await _client.PutAsJsonAsync($"{Endpoints.TransportBookingsEndpoint}/{id}", transportBookings);
+
+            if (response.IsSuccessStatusCode)
+            {
+                _navManager.NavigateTo("/transportbookings/");
+            }
+            else
+            {
+                
+                Console.WriteLine($"Error: {response.ReasonPhrase}");
+                
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            
+            Console.WriteLine($"HTTP Request Error: {httpEx.Message}");
+            
+        }
+        catch (Exception ex)
+        {
+            // Handle non-HTTP exceptions
+            Console.WriteLine($"Error: {ex.Message}");
+            
+        }
     }
 }
+
+    
+  
