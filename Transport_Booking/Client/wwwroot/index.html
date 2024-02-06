@@ -8,8 +8,31 @@
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
-   
+
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.9/signalr.min.js"></script>
+    <script>
+        // Define the connection
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        // Start the connection
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        // Function to receive messages and invoke a Blazor method
+        connection.on("ReceiveMessage", function (user, message) {
+            DotNet.invokeMethodAsync('YourBlazorProjectName', 'ReceiveMessage', user, message);
+        });
+
+        // Function to send messages from Blazor to the SignalR hub
+        window.sendMessage = (user, message) => {
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+        };
+    </script>
+
 
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="Transport_Booking.Client.styles.css" rel="stylesheet" />

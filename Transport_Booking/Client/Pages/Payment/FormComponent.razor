@@ -33,24 +33,15 @@
     </div>
     </fieldset>
 
-    <fieldset disabled="@Disabled" >
-    <div class="form-group">
-        <label>Date:</label>
-        <div>
-            <InputDate @bind-Value="payments.PaymentDate" class="form-control" />
-            @if (payments.Id > 0)
-            {
-                <div class="form-group">
-                    <label>Date: </label>
-                    <div>
-                        <InputDate @bind-Value="@payments.PaymentDate" class="form-control" />
-                        <ValidationMessage For="@(() => payments.PaymentDate)" />
-                    </div>
-                </div>
-            }
-            <ValidationMessage For="@(() => payments.PaymentDate)" />
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Date:</label>
+            <div>
+                <!-- Ensure InputDate for PaymentDate is only rendered once -->
+                <InputDate @bind-Value="payments.PaymentDate" class="form-control" />
+                <ValidationMessage For="@(() => payments.PaymentDate)" />
+            </div>
         </div>
-    </div>
     </fieldset>
 
     <fieldset disabled="@Disabled" >

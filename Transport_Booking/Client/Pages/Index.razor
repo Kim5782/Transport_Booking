@@ -3,9 +3,12 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject NavigationManager NavigationManager
-
+@inject IJSRuntime JSRuntime
 
 @using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+
 
 <div class="navbar">
     <a href="authentication/profile">Profile</a>
@@ -40,7 +43,6 @@
     <p> All you need to do is just simply click this button.</p>
     <button type="submit" onclick="location.href='/transportbookings'" class="btn btn-primary">Book Now!</button>
 </header>
-
 
 
 
@@ -113,6 +115,110 @@
     </div>
 </div>
 
+<h3 class="chat-header">Chat with us!</h3>
+<div class="chat-container">
+    <div class="chat-box">
+        <div class="messages-container">
+            @foreach (var message in messages)
+            {
+                <div class="message">@message</div>
+            }
+        </div>
+        <div class="input-container">
+            <input @bind="messageInput" type="text" placeholder="Type your message here..." class="message-input" @onkeypress="HandleKeyPress" />
+            <button @onclick="SendMessage" class="send-button">Send</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .chat-header {
+        text-align: center;
+        font-size: 1.5em; 
+        color: #333; 
+        margin: 0;
+        padding: 20px;
+        background-color: #f9f9f9; 
+        border-radius: 8px 8px 0 0; 
+        border-bottom: 2px solid #ddd; 
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px; 
+        margin-left: auto; 
+        margin-right: auto; 
+    }
+    .chat-container {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        height: 100vh; 
+        padding: 20px; 
+    }
+
+    .chat-box {
+        width: 100%;
+        max-width: 500px; 
+        margin: auto;
+        background-color: #f3f3f3;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden; 
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    }
+
+    .messages-container {
+        height: 300px; 
+        overflow-y: auto;
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .message {
+        background-color: #e7e7e7;
+        padding: 8px 12px;
+        border-radius: 18px;
+        margin-bottom: 8px;
+        line-height: 1.4;
+        max-width: 80%; 
+        word-wrap: break-word; 
+        
+        margin-left: auto;
+        background-color: #dcf8c6; 
+    }
+
+    .input-container {
+        display: flex;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .message-input {
+        flex-grow: 1;
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        outline: none; 
+    }
+
+    .send-button {
+        padding: 10px 15px;
+        background-color: #4CAF50; 
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        outline: none; 
+    }
+
+        .send-button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+
+
+</style>
+
 <div class="testimonial-container">
     <div class="testimonial-image">
         <img src="/katong.jpg" alt="Cityscape" />
@@ -147,6 +253,27 @@
     private void NavigateToDiscounts()
     {
         Navigation.NavigateTo("/discounts");
+    }
+
+    private List<string> messages = new List<string>();
+    private string messageInput = "";
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(messageInput))
+        {
+            messages.Add(messageInput); 
+            await JSRuntime.InvokeVoidAsync("sendMessage", "User", messageInput); 
+            messageInput = ""; 
+        }
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SendMessage();
+        }
     }
 
 }
